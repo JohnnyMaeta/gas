@@ -157,9 +157,9 @@
   <ol>
     <li>基本は<strong>「発注文」をコピーして、自分のチャットAI（ChatGPT / Gemini のWeb版）に貼る</strong>のがこの本の流儀です。あなたのAIが返したコードを使ってください。あなたの学校の事情を足した発注文から生まれたコードが、あなたの道具になります。</li>
     <li>急ぐ人は「動くコード」をそのままコピーしても構いません。<strong>ここに載っているのは全部、実際に動く形で書いたものです。</strong></li>
-    <li><strong>準備は要りません。</strong>必要なシート・フォルダ・テンプレートは、最初の1回の実行でコードが自分で作ります。あなたがIDをコピーするのは第1章のカレンダーIDだけで、それも<a href="#c1w"><strong>練習版</strong></a>から入れば要りません。</li>
+    <li><strong>準備は要りません。</strong>必要なシート・フォルダ・テンプレートは、最初の1回の実行でコードが自分で作ります。あなたが<strong>学校の情報</strong>を入れるのは第1章のカレンダーIDだけで、それも<a href="#c1w"><strong>練習版</strong></a>から入れば、第1章を最後まで通したあとで構いません。</li>
     <li><strong>コードは、仕事のファイルの中に貼ります。</strong>スプレッドシートを使う章はスプレッドシートに、ドキュメントを使う章（第3章）はドキュメントに。どちらも入口は<strong>拡張機能 → Apps Script</strong>です。ファイルの中に住まわせておくと、そのファイルを開けば道具もそこにあります。各章の黄色い枠に、貼り付け先を書いてあります。</li>
-    <li>1章＝1ファイルです。前の章のコードに継ぎ足さず、章ごとに新しいファイルを作ってください（第2章だけは新しいコードがないので、第1章のファイルをそのまま育てます）。ブラウザのアドレスバーに <code>sheet.new</code> / <code>doc.new</code> と打つと、新しいファイルが1手で開きます（<code>form.new</code> <code>slide.new</code> <code>site.new</code> <code>cal.new</code> <code>meet.new</code> <code>keep.new</code> も同じ）。<strong>いちばん最初にログインしたアカウントで作られる</strong>ので、学校と個人を併用している人は、開いたあとのURLの <code>/u/0/</code> <code>/u/1/</code> を確かめてください。</li>
+    <li>1章＝1ファイルです。前の章のコードに継ぎ足さず、章ごとに新しいファイルを作ってください（第2章だけは新しいコードがないので、第1章のファイルをそのまま育てます）。ブラウザのアドレスバーに <code>sheet.new</code> / <code>doc.new</code> と打つと、新しいファイルが1手で開きます（<code>form.new</code> <code>slide.new</code> <code>site.new</code> <code>cal.new</code> <code>meet.new</code> <code>keep.new</code> も同じ）。<strong>いちばん最初にログインしたアカウントで作られる</strong>ので、学校と個人を併用している人は、開いた直後に<strong>画面右上のアカウントアイコン</strong>を確かめてください。個人のほうで開いていたら、そのファイルは捨てて、学校のアカウントで開いたドライブの「新規」から作り直します。</li>
     <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。この本で覚えるデバッグ法は、最後までこのひとつだけです。</li>
   </ol>
 </div>
@@ -319,7 +319,13 @@ function weekdayOf_(date) {
       <a href="https://calendar.google.com/calendar/render?cid=c_7ea8a4f2b303f1ce6b9e5daa7fd4d072aa1db87983e46f2f62676ff58b5924ce%40group.calendar.google.com" target="_blank" rel="noopener"><strong>▶ 練習用カレンダーを追加する</strong></a><br>
       練習用カレンダーは<strong>閲覧専用</strong>です。本物の個人情報は入っていませんし、書き込みもできません。
     </div>
-    <p class="what">動いたら、自分の学校のカレンダーに移ります。差し替えるのは、コードの上のほうの <code>CALENDAR_ID</code> の1か所だけです（第1章「準備」の節）。この先の育て方は第2章です。</p>
+    <p class="what"><strong>自分のAIに発注したコードを、練習用カレンダーで試したいときは、</strong>下のIDをコードの <code>▼</code> の場所に貼ってください。学校のカレンダーIDを用意しなくても、第1章は最後まで通せます。</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">練習用カレンダーID（戯画小学校・閲覧専用）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>c_7ea8a4f2b303f1ce6b9e5daa7fd4d072aa1db87983e46f2f62676ff58b5924ce@group.calendar.google.com</code></pre>
+    </div>
+    <p class="what">ひととおり動いたら、自分の学校のカレンダーに移ります。差し替えるのは、このIDが入っている <code>CALENDAR_ID</code> の1か所だけです（第1章「自分の学校に、移す」の節）。この先の育て方は第2章です。</p>
   </div>
 </section>
 
