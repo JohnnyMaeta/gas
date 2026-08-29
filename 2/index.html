@@ -117,6 +117,7 @@
   .copy-btn:hover { filter: brightness(1.08); }
   .copy-btn:active { transform: scale(.96); }
   .copy-btn.done { background: #3a8a63; }
+  .copy-btn.warn { background: #a86322; }
   pre {
     margin: 0;
     background: var(--code-bg);
@@ -161,6 +162,7 @@
     <li><strong>コードは、仕事のファイルの中に貼ります。</strong>スプレッドシートを使う章はスプレッドシートに、ドキュメントを使う章（第3章）はドキュメントに。どちらも入口は<strong>拡張機能 → Apps Script</strong>です。ファイルの中に住まわせておくと、そのファイルを開けば道具もそこにあります。各章の黄色い枠に、貼り付け先を書いてあります。</li>
     <li>1章＝1ファイルです。前の章のコードに継ぎ足さず、章ごとに新しいファイルを作ってください（第2章だけは新しいコードがないので、第1章のファイルをそのまま育てます）。ブラウザのアドレスバーに <code>sheet.new</code> / <code>doc.new</code> と打つと、新しいファイルが1手で開きます（<code>form.new</code> <code>slide.new</code> <code>site.new</code> <code>cal.new</code> <code>meet.new</code> <code>keep.new</code> も同じ）。<strong>いちばん最初にログインしたアカウントで作られる</strong>ので、学校と個人を併用している人は、開いた直後に<strong>画面右上のアカウントアイコン</strong>を確かめてください。個人のほうで開いていたら、そのファイルは捨てて、学校のアカウントで開いたドライブの「新規」から作り直します。</li>
     <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。この本で覚えるデバッグ法は、最後までこのひとつだけです。</li>
+    <li><strong>初回の▶実行で、承認の画面がなかなか出てこないときは、エディタのページを再読み込み（<code>Ctrl+R</code> / <code>⌘+R</code>）してから、もう一度▶を押してください。</strong>エラーではないので赤い文字も出ず、待っていても何も起きません。保存してあれば、貼ったコードは消えません。それでも出ないときは、ブラウザがポップアップをふさいでいないかを確かめます（詳しくは第1章「承認の儀式」・付録A 12番）。</li>
   </ol>
 </div>
 
@@ -2063,14 +2065,64 @@ function removeReminder_() {
 
 <script>
   document.querySelectorAll('.copy-btn').forEach(btn => {
+    // 表示を一時的に切り替える。連打しても元のラベルを見失わないよう、初回に控えておく
+    const flash = (message, cls, ms) => {
+      if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+      btn.textContent = message;
+      btn.classList.remove('done', 'warn');
+      btn.classList.add(cls);
+      clearTimeout(btn._timer);
+      btn._timer = setTimeout(() => {
+        btn.textContent = btn.dataset.label;
+        btn.classList.remove('done', 'warn');
+      }, ms);
+    };
+
     btn.addEventListener('click', () => {
-      const code = btn.closest('.codewrap').querySelector('code').innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        const original = btn.textContent;
-        btn.textContent = 'コピーしました';
-        btn.classList.add('done');
-        setTimeout(() => { btn.textContent = original; btn.classList.remove('done'); }, 1600);
-      });
+      const codeEl = btn.closest('.codewrap').querySelector('code');
+      const code = codeEl.innerText;
+
+      // 古い作法。clipboard APIが使えないブラウザ（アプリ内ブラウザなど）向け
+      const legacyCopy = () => {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = code;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-1000px';
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return ok;
+        } catch (e) {
+          return false;
+        }
+      };
+
+      // それも駄目なら、せめてコードを選択状態にして、手でコピーしてもらう
+      const onFailure = () => {
+        if (legacyCopy()) { flash('コピーしました', 'done', 1600); return; }
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(codeEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          flash('選択しました。Ctrl+C / ⌘+C を押してください', 'warn', 4000);
+        } catch (e) {
+          flash('コピーできません。コードを直接選んでください', 'warn', 4000);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(
+          () => flash('コピーしました', 'done', 1600),
+          onFailure
+        );
+      } else {
+        onFailure();
+      }
     });
   });
 </script>
