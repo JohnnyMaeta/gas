@@ -828,6 +828,7 @@ function removeTriggers_() {
 ・テンプレートのフォームのIDは、私にコピーさせず、スクリプトプロパティに覚えさせてください
 ・「行事一覧」シートに行事名と実施日を書いて実行すると、まだフォームがない行事だけ、テンプレートを複製して作ります
 ・複製したフォームは、タイトルの《行事名》をその行事名に差し替え、回答用URLと編集用URLをシートに書き戻します
+・複製したフォームは「公開」の状態にして、回答用URLがそのまま配れるようにしてください
 ・行事の行を選んで実行すると、その行事の回答を読んで「まとめ」シートに書き出します。5段階の質問は平均と1〜5の人数、記述式は箇条書きにしてください
 ・回答が0件のときは「まだ回答がありません」と教えてください
 ・操作は全部、シート上部の日本語のメニューから選べるようにしてください</code></pre>
@@ -919,6 +920,7 @@ function makeForms() {
     form.setDescription(
       (heldOn ? ymd_(heldOn) + 'に実施した' : '') + name + 'の反省です。お気づきの点をお願いします。'
     );
+    publishForm_(form); // 回答用URLを、そのまま配れる状態にする
 
     sheet.getRange(i + 2, 3).setValue(form.getPublishedUrl());
     sheet.getRange(i + 2, 4).setValue(form.getEditUrl());
@@ -927,7 +929,8 @@ function makeForms() {
   }
 
   ui.alert(made &gt; 0
-    ? 'フォームを ' + made + ' 本つくりました。回答用URLを職員に送ってください。'
+    ? 'フォームを ' + made + ' 本つくりました。回答用URLを職員に送ってください。\n\n' +
+      '※「開けません」と言われたら、編集用URLを開いて右上の「公開」を押してから配ってください。'
     : '新しく作る行事はありませんでした。行事名を書いた行に、まだURLが入っていないか確かめてください。');
 }
 
@@ -1031,6 +1034,24 @@ function getOrCreateTemplateForm_() {
 
   props.setProperty(TEMPLATE_KEY, form.getId());
   return form;
+}
+
+/**
+ * フォームを「公開」にします。
+ * いまのフォームは、公開していないと回答用URLを開いてもらえません。
+ * 公開の考え方がない古い形式のフォームのときは、回答の受付をオンにします。
+ */
+function publishForm_(form) {
+  try {
+    if (form.supportsAdvancedResponderPermissions()) {
+      form.setPublished(true);
+    } else {
+      form.setAcceptingResponses(true);
+    }
+  } catch (e) {
+    // 公開できなくても、フォーム作りは止めません。
+    // 編集用URLを開いて、右上の「公開」を押してから配ってください。
+  }
 }
 
 /** 回答を、まとめシートに書き出します。 */
