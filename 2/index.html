@@ -1475,6 +1475,9 @@ function buildSheet() {
     ['10:40', 20, '', '応援合戦', '応援団'],
     ['11:00', 20, '', '閉会式', '進行']
   ];
+  // 「8:30」が勝手に時刻データに変わらないよう、先に文字として扱う設定にします
+  sheet.getRange(2, 1, sample.length, 1).setNumberFormat('@');
+  sheet.getRange(2, 3, sample.length, 1).setNumberFormat('@');
   sheet.getRange(2, 1, sample.length, 5).setValues(sample);
   recalcTimes();
   makeItBig_(sheet);
@@ -1693,6 +1696,11 @@ function makeItBig_(sheet) {
 
 /** 「8:30」を、0時からの分数に直します。読めないときは null。 */
 function parseTime_(text) {
+  // 手で打った「8:30」をスプレッドシートが時刻データに変えてしまうことがあるので、
+  // その場合は見た目どおりの時刻に読み直します
+  if (text instanceof Date) {
+    text = Utilities.formatDate(text, SpreadsheetApp.getActive().getSpreadsheetTimeZone(), 'H:mm');
+  }
   const s = String(text).trim().replace('：', ':');
   const m = s.match(/^(\d{1,2}):(\d{1,2})$/);
   if (!m) return null;
