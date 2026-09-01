@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コードを1文字も書かない校務自動化3｜コード＆発注文一覧</title>
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --panel: #ffffff;
+    --ink: #22242a;
+    --muted: #6b6f76;
+    --line: #e4e4e0;
+    --accent: #2f5a8f;
+    --accent-soft: #e7edf5;
+    --code-bg: #1e2127;
+    --code-ink: #e6e6e6;
+    --note-bg: #fff8e6;
+    --note-line: #e8d48a;
+    --note-ink: #6b5310;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181d;
+      --panel: #1e2127;
+      --ink: #e7e8ea;
+      --muted: #9aa0a8;
+      --line: #313640;
+      --accent: #7aa7d9;
+      --accent-soft: #212a35;
+      --code-bg: #12141a;
+      --code-ink: #e6e6e6;
+      --note-bg: #2a2617;
+      --note-line: #5c5024;
+      --note-ink: #e0cf90;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+  header.page { border-bottom: 2px solid var(--accent); padding-bottom: 20px; margin-bottom: 8px; }
+  header.page h1 { font-size: 1.6rem; margin: 0 0 6px; letter-spacing: .01em; }
+  header.page .sub { color: var(--muted); font-size: .95rem; margin: 0; }
+  .lead { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 24px 0 32px; font-size: .95rem; }
+  .lead h2 { font-size: 1rem; margin: 0 0 8px; }
+  .lead ol { margin: 8px 0 0; padding-left: 1.3em; }
+  .lead li { margin: 6px 0; }
+  nav.toc { background: var(--accent-soft); border-radius: 12px; padding: 16px 20px; margin-bottom: 40px; font-size: .92rem; }
+  nav.toc strong { display: block; margin-bottom: 8px; color: var(--accent); }
+  nav.toc a { color: var(--ink); text-decoration: none; display: inline-block; padding: 2px 0; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+  nav.toc ul { list-style: none; margin: 2px 0 0; padding-left: 4px; }
+  section.chapter { margin-bottom: 48px; }
+  section.chapter > h2 { font-size: 1.25rem; border-left: 5px solid var(--accent); padding-left: 12px; margin: 0 0 4px; }
+  .recipe { margin-top: 24px; }
+  .recipe .what { color: var(--muted); font-size: .93rem; margin: 0 0 12px; }
+  .note { background: var(--note-bg); border: 1px solid var(--note-line); color: var(--note-ink); border-radius: 8px; padding: 10px 14px; font-size: .86rem; margin: 0 0 12px; }
+  .note code { background: rgba(0,0,0,.12); padding: 1px 5px; border-radius: 4px; }
+  .note .where { display: inline-block; margin-top: 6px; opacity: .85; }
+  .codewrap { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 14px; }
+  .codebar { display: flex; justify-content: space-between; align-items: center; background: var(--code-bg); padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .codebar .fname { color: #9aa7b8; font-size: .78rem; font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .copy-btn { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 5px 14px; font-size: .8rem; cursor: pointer; transition: background .15s, transform .1s; white-space: nowrap; }
+  .copy-btn:hover { filter: brightness(1.08); }
+  .copy-btn:active { transform: scale(.96); }
+  .copy-btn.done { background: #3a8a63; }
+  .copy-btn.warn { background: #a86322; }
+  pre { margin: 0; background: var(--code-bg); color: var(--code-ink); padding: 16px; overflow-x: auto; font-size: .82rem; line-height: 1.6; max-height: 560px; }
+  pre code { font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace; white-space: pre; }
+  .codewrap.order pre { background: #263043; max-height: none; }
+  .codewrap.order .codebar { background: #263043; }
+  footer.page { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+  @media (max-width: 600px) {
+    .wrap { padding: 24px 14px 60px; }
+    header.page h1 { font-size: 1.3rem; }
+    pre { font-size: .76rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <h1>コードを1文字も書かない校務自動化3｜コード＆発注文一覧</h1>
+  <p class="sub">『コードを1文字も書かない校務自動化3（Webアプリ編・近刊）』の読者用ページです。本書の発注文と、実際に動くコードを、まとめてコピーできます。1・2冊目の道具に、スマホや大画面で開ける「画面」をつけます。</p>
+</header>
+
+<div class="lead">
+  <h2>使い方</h2>
+  <ol>
+    <li>基本は<strong>「発注文」をコピーして、自分のチャットAI（ChatGPT / Gemini のWeb版）に貼る</strong>のがこの本の流儀です。2冊目のコードに「続けて」頼む章は、いま手元で動いているコードをチャットに貼ってから、発注文を送ってください。</li>
+    <li>急ぐ人は「動くコード」をそのままコピーしても構いません。<strong>ここに載っているのは全部、発注文からAIに作らせて、実際に動かして確かめたものです。</strong>2冊目のコードが手元になくても、ここの完成品はベースの機能ごと入っています。</li>
+    <li><strong>準備は要りません。</strong>必要なシートは、最初の1回の実行でコードが自分で作ります。第1章は練習用カレンダー入りで、書き換える場所はありません。</li>
+    <li>画面を開けるようにする手続きが<strong>「デプロイの儀式」</strong>です（下の黄色い枠）。この本で新しく覚える操作は、実はこれだけです。</li>
+    <li><strong>第7章だけ、ファイルが2つです。</strong>エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。</li>
+    <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。画面が開けないと言われたら、まず<strong>シークレットウィンドウ</strong>で開いてもらいます（マルチアカウントの切り分け）。</li>
+  </ol>
+</div>
+
+<nav class="toc">
+  <strong>目次</strong>
+  <ul>
+    <li><a href="#template">いつもの前置き（発注テンプレ）</a></li>
+    <li><a href="#deploy">デプロイの儀式（チェックリスト）</a></li>
+    <li><a href="#c1">第1章 週予定を、スマホで開く</a></li>
+    <li><a href="#c2">第2章 画面を、育てる</a></li>
+    <li><a href="#c3">第3章 進行表を、体育館の大画面に</a></li>
+    <li><a href="#c4">第4章 提出状況を、ボードにする</a></li>
+    <li><a href="#c5">第5章 「今日の学校」ページ</a></li>
+    <li><a href="#c6">第6章 教室に、ボタンを置く</a></li>
+    <li><a href="#c7">第7章 予約を、受け付ける——保護者面談</a></li>
+  </ul>
+</nav>
+
+<!-- ============ 前置き ============ -->
+<section class="chapter" id="template">
+  <h2>いつもの前置き（発注テンプレ）</h2>
+  <div class="recipe">
+    <p class="what">新しく作らせる章（第6章・第7章）は、この前置きから始めます。「続けて」頼む章は、動いているコードを貼ってから各章の発注文を送ってください。</p>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注テンプレ（全レシピ共通）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>私はプログラミング未経験の教員です。Google Apps Scriptのコードを書いてください。
+条件：(1) コードは1つにまとめる（この本の第7章だけは、中身と見た目の2ファイル） (2) 私が書き換える場所には日本語のコメントで「▼」を付ける
+(3) シート名の間違いなど、ありがちなミスは日本語のエラーメッセージで教えてくれる仕組みを入れる。
+まず、何をするコードか1行で説明してから、コードを見せてください。</code></pre>
+    </div>
+    <p class="what">この本で育った、画面の定番の追加行です。困ったらこの中から足してください。1行目が、この本の背骨です。</p>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">この本で育った定番の追加行</span><button class="copy-btn">コピー</button></div>
+      <pre><code>・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・画面は、開くたびにシートの最新の中身を読み込んでください
+・画面は◯秒ごとに自動で最新の状態に更新してください。人が操作しなくても動き続けるようにしてください
+・（人の名前などを）画面には絶対に出さないでください
+・同じ枠に同時に2人が申し込んでも、先の1人だけが確定するようにしてください
+・スマホでもパソコンでも崩れないようにしてください
+・画面の見出しは、コードの最初で書き換えられるようにしてください</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ デプロイ ============ -->
+<section class="chapter" id="deploy">
+  <h2>デプロイの儀式（チェックリスト）</h2>
+  <div class="recipe">
+    <p class="what">作った画面をURLで開けるようにする手続きです。詳しくは本書第1章。ここには手順だけ置いておきます。</p>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">デプロイの儀式・更新・切り分け</span><button class="copy-btn">コピー</button></div>
+      <pre><code>■ デプロイの儀式（最初の1回）
+1. エディタ右上の「デプロイ」→「新しいデプロイ」
+2. 歯車（種類の選択）→「ウェブアプリ」
+3. 「次のユーザーとして実行」＝ 自分
+4. 「アクセスできるユーザー」＝ 開く人で決める
+   （自分だけ→自分のみ／職員・児童→組織内／保護者・外部→全員）
+5. 「デプロイ」→ 承認 → URLを控える
+
+■ 直したとき（2回目から）
+「デプロイ」→「デプロイを管理」→ 鉛筆 →「新バージョン」→「デプロイ」
+※「新しいデプロイ」は押さない（URLが変わります）
+
+■ 「開けません」と言われたら
+1. シークレットウィンドウで開いてもらう（マルチアカウントの切り分け）
+2. アクセスできるユーザーの設定を確かめる
+3. 「新しいデプロイ」でURLが変わっていないか確かめる</code></pre>
+    </div>
+    <div class="note">合言葉は「<strong>最初の1回だけ『新しいデプロイ』、直したら『デプロイを管理』</strong>」。「新しいデプロイ」を押し直すとURLが変わって、配ったQRやブックマークが全部無効になります。</div>
+  </div>
+</section>
+
+<!-- ============ 第1章 週予定を、スマホで開く ============ -->
+<section class="chapter" id="c1">
+  <h2>第1章 週予定を、スマホで開く</h2>
+  <div class="recipe">
+    <p class="what">2冊目第1章の週予定書き出しに、スマホで見られる画面をつけたものです。1階（カレンダー→シート）は2冊目と同じ、2階（画面）が今回の追加です。</p>
+    <div class="note">練習用カレンダーのIDが貼り付け済みなので、<strong>書き換える場所はありません。</strong>①▶実行（main）でシートに書き出す ②デプロイの儀式（下の黄色い枠）でURLを発行、の2段階です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>このコード（週予定をシートに書き出すGAS）に、続けて機能を足してください。
+・スマホで見られるWebアプリの画面を追加してください
+・画面には「週予定」シートの中身を、日付ごとにまとめて表示してください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・画面は、開くたびにシートの最新の中身を読み込んでください
+・文字は大きめにして、スマホで読みやすくしてください
+・画面のいちばん上の見出しは、コードの最初で書き換えられるようにしてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（週予定ウェブくん.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 週予定ウェブくん —— GAS本3 第1章
+ *
+ * 2冊目第1章の「週予定書き出し」に、スマホで見られる画面をつけたものです。
+ *   ・▶実行（main）で、カレンダーから「週予定」シートに書き出す（ここまでは2冊目と同じ）
+ *   ・デプロイすると、シートの中身がスマホで開ける1枚のページになる
+ *   ・本体はシートのほう。シートを直接編集しても、画面はそのまま表示するだけなので壊れません
+ *
+ * 【準備】ありません。カレンダーIDは練習用が貼り付け済みです。
+ * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script に貼ります。
+ * 【手順】①▶実行（main）で書き出す ②「デプロイ」→「新しいデプロイ」→「ウェブアプリ」（本文参照）
+ */
+
+// ▼ 練習用カレンダー（自分の学校で使うときだけ、ここを入れ替えます）
+const CALENDAR_ID = 'cf1359e89272ea7fdf29a589b7bf718c03f0079a3aa77eac5e3320e4e5c6c740@group.calendar.google.com';
+const SHEET_NAME = '週予定';    // ▼ 書き出す先のシート名
+const APP_TITLE = '週予定';     // ▼ 画面のいちばん上に出る見出し（学校名を入れても）
+// -------------------------------------------------------------------------
+
+const HEADER = ['日付', '曜日', '開始時刻', '予定名'];
+
+/** カレンダーからシートへ書き出します。▶実行を押すのはこの関数（2冊目第1章と同じ）。 */
+function main() {
+  let calendar = CalendarApp.getCalendarById(CALENDAR_ID);
+
+  if (!calendar) {
+    try {
+      calendar = CalendarApp.subscribeToCalendar(CALENDAR_ID);
+    } catch (e) {
+      throw new Error(
+        '練習用カレンダーを追加できませんでした。\n' +
+        'コード掲載ページにある「練習用カレンダーを追加」のリンクを押してから、\n' +
+        'もう一度▶実行してください。'
+      );
+    }
+  }
+
+  const week = nextWeek_();
+  const events = calendar.getEvents(week.start, week.end);
+
+  const rows = events.map(function (event) {
+    const startedAt = event.getStartTime();
+    return [
+      ymd_(startedAt),
+      weekdayOf_(startedAt),
+      event.isAllDayEvent() ? '終日' : Utilities.formatDate(startedAt, 'Asia/Tokyo', 'H:mm'),
+      event.getTitle()
+    ];
+  });
+
+  const sheet = getOrCreateSheet_();
+  if (sheet.getLastRow() &gt; 1) {
+    sheet.getRange(2, 1, sheet.getLastRow() - 1, HEADER.length).clearContent();
+  }
+
+  if (rows.length === 0) {
+    SpreadsheetApp.getActive().toast(
+      week.label + ' の予定は0件でした。カレンダーに予定がない週です。',
+      '書き出しました', 10
+    );
+    return;
+  }
+
+  sheet.getRange(2, 1, rows.length, HEADER.length).setValues(rows);
+  sheet.getRange(2, 1, rows.length, 1).setNumberFormat('@');
+  SpreadsheetApp.getActive().toast(week.label + ' の予定を ' + rows.length + ' 件、書き出しました。', '完了', 6);
+}
+
+/**
+ * ここが今回の追加です。デプロイしたURLが開かれると、この関数が呼ばれます。
+ * やっていることは「週予定シートを読んで、スマホ向けの1枚のページにして返す」だけ。
+ * 本体はあくまでシートのほうです。シートを直接直せば、画面も次に開いたときから変わります。
+ */
+function doGet() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  const lastRow = sheet ? sheet.getLastRow() : 0;
+  const rows = lastRow &gt; 1
+    ? sheet.getRange(2, 1, lastRow - 1, HEADER.length).getValues()
+    : [];
+
+  // 日付ごとにまとめます
+  const days = [];
+  const byDate = {};
+  rows.forEach(function (row) {
+    const date = String(row[0]).trim();
+    if (!date) return;
+    if (!byDate[date]) {
+      byDate[date] = { date: date, weekday: String(row[1]), items: [] };
+      days.push(byDate[date]);
+    }
+    byDate[date].items.push({ time: String(row[2]), title: String(row[3]) });
+  });
+
+  let body = '';
+  if (days.length === 0) {
+    body = '&lt;p class="empty"&gt;まだ予定が書き出されていません。&lt;br&gt;スプレッドシートで ▶実行（main）を押してください。&lt;/p&gt;';
+  } else {
+    days.forEach(function (day) {
+      body += '&lt;section&gt;&lt;h2&gt;' + esc_(mdLabel_(day.date)) + '（' + esc_(day.weekday) + '）&lt;/h2&gt;&lt;ul&gt;';
+      day.items.forEach(function (item) {
+        body += '&lt;li&gt;&lt;span class="time"&gt;' + esc_(item.time) + '&lt;/span&gt;' + esc_(item.title) + '&lt;/li&gt;';
+      });
+      body += '&lt;/ul&gt;&lt;/section&gt;';
+    });
+  }
+
+  const html =
+    '&lt;style&gt;' +
+    'body{font-family:sans-serif;margin:0;background:#f6f7f9;color:#202124;}' +
+    'header{background:#188038;color:#fff;padding:14px 16px;font-size:20px;font-weight:bold;}' +
+    'main{padding:12px;max-width:640px;margin:0 auto;}' +
+    'section{background:#fff;border-radius:10px;padding:4px 14px 10px;margin:0 0 12px;box-shadow:0 1px 3px rgba(0,0,0,.12);}' +
+    'h2{font-size:17px;border-bottom:2px solid #188038;padding-bottom:6px;margin:10px 0 4px;}' +
+    'ul{list-style:none;margin:0;padding:0;}' +
+    'li{font-size:17px;padding:8px 2px;border-bottom:1px solid #eee;}' +
+    'li:last-child{border-bottom:none;}' +
+    '.time{display:inline-block;min-width:64px;color:#188038;font-weight:bold;}' +
+    '.empty{font-size:16px;padding:24px 8px;text-align:center;color:#5f6368;}' +
+    'footer{text-align:center;color:#9aa0a6;font-size:12px;padding:8px 0 20px;}' +
+    '&lt;/style&gt;' +
+    '&lt;header&gt;' + esc_(APP_TITLE) + '&lt;/header&gt;' +
+    '&lt;main&gt;' + body + '&lt;/main&gt;' +
+    '&lt;footer&gt;このページは「' + esc_(SHEET_NAME) + '」シートの中身を表示しています&lt;/footer&gt;';
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(APP_TITLE)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/** 「週予定」シートを、なければ見出しつきで作ります。 */
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  ss.setSpreadsheetTimeZone('Asia/Tokyo'); // 日付がずれないように、先に日本時間にそろえます
+
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const header = sheet.getRange(1, 1, 1, HEADER.length);
+  if (String(header.getValues()[0][0]) !== HEADER[0]) {
+    header.setValues([HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 110);
+    sheet.setColumnWidth(2, 50);
+    sheet.setColumnWidth(3, 90);
+    sheet.setColumnWidth(4, 380);
+  }
+  return sheet;
+}
+
+/** 来週の月曜0時から、土曜0時までを返します（日本時間で組み立て）。 */
+function nextWeek_() {
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd').split('-').map(Number);
+  const anchor = Date.UTC(today[0], today[1] - 1, today[2]);
+  const day = new Date(anchor).getUTCDay();
+  const untilMonday = ((8 - day) % 7) || 7;
+  const monday = anchor + untilMonday * 24 * 60 * 60 * 1000;
+
+  const start = new Date(monday - 9 * 60 * 60 * 1000);
+  const end = new Date(start.getTime() + 5 * 24 * 60 * 60 * 1000);
+
+  return {
+    start: start,
+    end: end,
+    label: Utilities.formatDate(start, 'Asia/Tokyo', 'M月d日') + 'の週'
+  };
+}
+
+/** 2026-09-07 の形の文字列にします。 */
+function ymd_(date) {
+  return Utilities.formatDate(date, 'Asia/Tokyo', 'yyyy-MM-dd');
+}
+
+/** 日本時間での曜日を1文字で返します。 */
+function weekdayOf_(date) {
+  const n = ymd_(date).split('-').map(Number);
+  const anchor = new Date(Date.UTC(n[0], n[1] - 1, n[2]));
+  return ['日', '月', '火', '水', '木', '金', '土'][anchor.getUTCDay()];
+}
+
+/** 「2026-09-07」を「9月7日」の形にします。読めない値はそのまま返します。 */
+function mdLabel_(text) {
+  const m = String(text).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  return m ? Number(m[2]) + '月' + Number(m[3]) + '日' : String(text);
+}
+
+/** 画面に出す文字を、そのままの形で安全に表示するための変換です。 */
+function esc_(text) {
+  return String(text)
+    .replace(/&amp;/g, '&amp;amp;')
+    .replace(/&lt;/g, '&amp;lt;')
+    .replace(/&gt;/g, '&amp;gt;')
+    .replace(/"/g, '&amp;quot;');
+}</code></pre>
+    </div>
+  </div>
+</section>
+    <div class="note" style="margin-top:-34px">
+      「練習用カレンダーを追加できませんでした」と出たときだけ、こちらを押して追加してから、もう一度▶実行してください。<br>
+      <a href="https://calendar.google.com/calendar/render?cid=cf1359e89272ea7fdf29a589b7bf718c03f0079a3aa77eac5e3320e4e5c6c740%40group.calendar.google.com" target="_blank" rel="noopener"><strong>▶ 練習用カレンダーを追加する</strong></a>（架空の「戯画小学校」・閲覧専用・本物の個人情報は入っていません）
+    </div>
+
+<!-- ============ 第2章 ============ -->
+<section class="chapter" id="c2">
+  <h2>第2章 画面を、育てる</h2>
+  <div class="recipe">
+    <p class="what">この章に新しいコードはありません。第1章の画面を、日本語の注文で自分の学校の顔にします。直したら「デプロイを管理」から新バージョンにするのを忘れずに。</p>
+    <div class="note">アレンジの注文は<strong>一度にひとつずつ</strong>送ってください。まとめて頼むと、動かなくなったときに原因がわかりません。ひとつずつなら、犯人はいつも直前のひとつです。</div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">アレンジの注文（★一度にひとつずつ送ります）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>画面の文字を、全体にひとまわり大きくしてください。体育館の入口に貼るタブレットでも読めるくらいにしてください。
+
+画面のいちばん上の見出しを「戯画小学校 今週の予定」にしてください。
+
+見出しの背景の色を、緑から紺色に変えてください。
+
+今日の日付のところだけ、背景を薄い黄色にして、いちばん上に表示してください。
+
+予定名に「非公開」が入っている行は、シートには残したまま、画面には表示しないでください。
+
+画面のいちばん下に、「最終更新」として週予定シートに書き出した日時を表示してください。</code></pre>
+    </div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">困ったときの4本（2冊目と同じ）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>省略しないで、コード全体をもう一度ください。
+
+さっきまで動いていました。いまの変更を入れたら、このエラーが出ました。
+（ここに赤い文字を貼る）
+
+さっきの変更を取り消して、その前の状態に戻してください。
+
+ここまでの変更を全部反映した、新しい発注文を書いてください。</code></pre>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 第3章 進行表を、体育館の大画面に ============ -->
+<section class="chapter" id="c3">
+  <h2>第3章 進行表を、体育館の大画面に</h2>
+  <div class="recipe">
+    <p class="what">2冊目第6章の進行表タイマーに、体育館の大画面用の画面をつけたものです。いまの種目と残り時間が特大で映り、20秒ごとに勝手に更新されます。当日、誰も画面を触りません。</p>
+    <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。体育館のテレビに映すだけなら、アクセスできるユーザーは「自分のみ」でも構いません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>このコード（行事の進行表タイマー）に、続けて機能を足してください。
+・体育館の大画面に映すためのWebアプリの画面を追加してください
+・画面には、いま進んでいる種目を特大の文字で、残り時間を「あと◯分」の形で表示してください
+・つぎの種目も1行で表示してください
+・その下に一日の全部の種目を並べて、終わったものは薄く線を引いてください
+・画面は20秒ごとに自動で最新の状態に更新してください。人が操作しなくても動き続けるようにしてください
+・背景は黒、文字は白と黄色の、遠くから見やすい配色にしてください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・画面の見出しは、コードの最初で行事名に書き換えられるようにしてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（進行表大画面くん.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 進行表大画面くん —— GAS本3 第3章
+ *
+ * 2冊目第6章の「進行表タイマー」に、体育館の大画面用のWeb画面をつけたものです。
+ *   ・シート側の機能は2冊目と同じ（見本づくり・終了時刻の計算・◯分ずらす・1分ごとの自動追いかけ）
+ *   ・デプロイすると、いまの種目と残り時間が大きく映る画面になります
+ *   ・画面は20秒ごとに勝手に読み直します。当日、誰も画面を触りません
+ *   ・本体は「進行表」シート。ずらすのも直すのも、ぜんぶシート側でやります
+ *
+ * 【準備】ありません。▶実行またはメニューで見本ができます。
+ * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script
+ */
+
+// ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const APP_TITLE = '運動会 進行表';   // ▼ 画面の上に出る見出し（行事名に）
+const SHEET_NAME = '進行表';
+const NOW_COLOR = '#fff2cc';
+const DONE_COLOR = '#f1f3f4';
+const BIG_FONT = 20;
+// -------------------------------------------------------------------------
+
+const HEADER = ['開始', '所要(分)', '終了', '内容', '担当', 'いま'];
+
+/** シートを開いたときに動きます。 */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('⏱ 進行表')
+    .addItem('進行表をつくる', 'buildSheet')
+    .addItem('終了時刻を計算する', 'recalcTimes')
+    .addItem('いまの項目に印をつける', 'markNowFromMenu')
+    .addSeparator()
+    .addItem('ここから◯分うしろにずらす', 'shiftFromHere')
+    .addSeparator()
+    .addItem('1分ごとに自動で追いかける', 'startAutoFollow')
+    .addItem('自動で追いかけるのをやめる', 'stopAutoFollow')
+    .addToUi();
+
+  ensureSheet_();
+  markNow();
+}
+
+/** 見出しと、見本の進行表を作ります。すでに中身があるときは何もしません。 */
+function buildSheet() {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = ensureSheet_();
+
+  if (sheet.getLastRow() &gt; 1) {
+    ui.alert('すでに進行表があります。中身を消したいときは、行を選んで手で削除してください。');
+    return;
+  }
+
+  const sample = [
+    ['8:30', 15, '', '児童入場', '各担任'],
+    ['8:45', 15, '', '開会式', '進行'],
+    ['9:00', 10, '', '準備運動', '体育部'],
+    ['9:10', 25, '', '徒競走（低学年）', '低学年部'],
+    ['9:35', 25, '', '徒競走（中学年）', '中学年部'],
+    ['10:00', 15, '', '休憩・給水', '保健部'],
+    ['10:15', 25, '', '団体競技（高学年）', '高学年部'],
+    ['10:40', 20, '', '応援合戦', '応援団'],
+    ['11:00', 20, '', '閉会式', '進行']
+  ];
+  // 「8:30」が勝手に時刻データに変わらないよう、先に文字として扱う設定にします
+  sheet.getRange(2, 1, sample.length, 1).setNumberFormat('@');
+  sheet.getRange(2, 3, sample.length, 1).setNumberFormat('@');
+  sheet.getRange(2, 1, sample.length, 5).setValues(sample);
+  recalcTimes();
+  makeItBig_(sheet);
+
+  ui.alert('見本の進行表を入れました。内容を自校のものに書き換えて、「終了時刻を計算する」を押してください。');
+}
+
+/** 所要（分）から、終了時刻と次の開始時刻を計算します。 */
+function recalcTimes() {
+  const sheet = ensureSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) {
+    SpreadsheetApp.getUi().alert('先に「進行表をつくる」を実行するか、1行目に開始時刻を書いてください。');
+    return;
+  }
+
+  const range = sheet.getRange(2, 1, lastRow - 1, 3);
+  const values = range.getValues();
+  let cursor = parseTime_(values[0][0]);
+
+  if (cursor === null) {
+    SpreadsheetApp.getUi().alert(
+      'いちばん上の開始時刻が読めません。「8:30」のように、半角の数字とコロンで書いてください。\n' +
+      '（いま入っているもの: ' + values[0][0] + '）'
+    );
+    return;
+  }
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const minutes = Number(values[i][1]);
+    if (!minutes || minutes &lt;= 0) {
+      values[i][0] = (i === 0) ? formatTime_(cursor) : '';
+      values[i][2] = '';
+      continue;
+    }
+    values[i][0] = formatTime_(cursor);
+    values[i][2] = formatTime_(cursor + minutes);
+    cursor += minutes;
+  }
+
+  range.setNumberFormat('@');
+  range.setValues(values);
+  markNow();
+}
+
+/** メニューから押したとき用。 */
+function markNowFromMenu() {
+  const row = markNow();
+  const ui = SpreadsheetApp.getUi();
+  ui.alert(row &gt; 0
+    ? '印をつけました。'
+    : 'いまの時刻に当てはまる項目がありません。進行表の時間の外にいます。');
+}
+
+/** いま進んでいる項目に「▶」と色をつけます（シート側の表示）。 */
+function markNow() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  if (!sheet) return 0;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return 0;
+
+  const values = sheet.getRange(2, 1, lastRow - 1, 3).getValues();
+  const now = nowMinutes_();
+
+  const marks = [];
+  const colors = [];
+  let hit = 0;
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const start = parseTime_(values[i][0]);
+    const end = parseTime_(values[i][2]);
+
+    if (start === null || end === null) {
+      marks.push(['']);
+      colors.push(['#ffffff']);
+      continue;
+    }
+    if (now &gt;= start &amp;&amp; now &lt; end) {
+      marks.push(['▶ あと' + (end - now) + '分']);
+      colors.push([NOW_COLOR]);
+      hit = i + 2;
+    } else if (now &gt;= end) {
+      marks.push(['済']);
+      colors.push([DONE_COLOR]);
+    } else {
+      marks.push(['']);
+      colors.push(['#ffffff']);
+    }
+  }
+
+  sheet.getRange(2, 6, marks.length, 1).setValues(marks);
+  sheet.getRange(2, 1, colors.length, HEADER.length).setBackgrounds(
+    colors.map(function (c) { return new Array(HEADER.length).fill(c[0]); })
+  );
+
+  if (hit &gt; 0) {
+    try {
+      sheet.setActiveSelection(sheet.getRange(hit, 1, 1, HEADER.length));
+    } catch (e) {
+      // 画面を開いていないときは、選択できなくても構いません
+    }
+  }
+  return hit;
+}
+
+/** 押している分を、まとめて後ろにずらします。 */
+function shiftFromHere() {
+  const ui = SpreadsheetApp.getUi();
+  const ss = SpreadsheetApp.getActive();
+  const sheet = ensureSheet_();
+
+  if (ss.getActiveSheet().getName() !== SHEET_NAME) {
+    ui.alert('「' + SHEET_NAME + '」シートで、ずらし始めたい行をクリックしてから実行してください。');
+    return;
+  }
+
+  const from = Math.max(2, ss.getActiveRange().getRow());
+  const answer = ui.prompt(
+    '何分ずらしますか',
+    from + '行目から下を、まとめてずらします。\n押しているときは「5」、巻きたいときは「-5」のように入れてください。',
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (answer.getSelectedButton() !== ui.Button.OK) return;
+
+  const shift = Number(String(answer.getResponseText()).trim());
+  if (!shift) {
+    ui.alert('数字で入れてください。（入力されたもの: ' + answer.getResponseText() + '）');
+    return;
+  }
+
+  const lastRow = sheet.getLastRow();
+  const range = sheet.getRange(from, 1, lastRow - from + 1, 3);
+  const values = range.getValues();
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const start = parseTime_(values[i][0]);
+    const end = parseTime_(values[i][2]);
+    if (start !== null) values[i][0] = formatTime_(start + shift);
+    if (end !== null) values[i][2] = formatTime_(end + shift);
+  }
+  range.setNumberFormat('@');
+  range.setValues(values);
+  markNow();
+
+  ui.alert(from + '行目から下を、' + shift + '分ずらしました。');
+}
+
+/** 1分ごとに、シート側の印を自動で動かします。 */
+function startAutoFollow() {
+  stopAutoFollow_();
+  ScriptApp.newTrigger('markNow').timeBased().everyMinutes(1).create();
+  SpreadsheetApp.getUi().alert(
+    '1分ごとに、印が勝手に動くようになりました。\n行事が終わったら「自動で追いかけるのをやめる」を押してください。'
+  );
+}
+
+/** 自動実行をやめます。 */
+function stopAutoFollow() {
+  const count = stopAutoFollow_();
+  SpreadsheetApp.getUi().alert('自動実行を ' + count + ' 件、止めました。');
+}
+
+/**
+ * ここが今回の追加です。体育館の大画面用のページを返します。
+ * 画面は20秒ごとに getBoardState を呼び直して、勝手に最新になります。
+ */
+function doGet() {
+  const html =
+    '&lt;style&gt;' +
+    'body{font-family:sans-serif;margin:0;background:#111;color:#fff;}' +
+    'header{padding:10px 20px;font-size:28px;font-weight:bold;background:#000;color:#ffd54f;}' +
+    '.now{padding:24px 20px 8px;}' +
+    '.now .label{font-size:22px;color:#9aa0a6;}' +
+    '.now .title{font-size:64px;font-weight:bold;line-height:1.2;}' +
+    '.now .left{font-size:44px;color:#ffd54f;font-weight:bold;}' +
+    '.next{padding:8px 20px 16px;font-size:26px;color:#e8eaed;}' +
+    '.next span{color:#9aa0a6;}' +
+    'ul{list-style:none;margin:0;padding:8px 20px 24px;}' +
+    'li{font-size:24px;padding:6px 0;border-bottom:1px solid #333;}' +
+    'li.done{color:#5f6368;text-decoration:line-through;}' +
+    'li.now{color:#ffd54f;font-weight:bold;}' +
+    'li .time{display:inline-block;min-width:110px;}' +
+    '.empty{padding:40px 20px;font-size:28px;color:#9aa0a6;}' +
+    '&lt;/style&gt;' +
+    '&lt;header id="title"&gt;&lt;/header&gt;' +
+    '&lt;div id="board" class="empty"&gt;読み込んでいます…&lt;/div&gt;' +
+    '&lt;script&gt;' +
+    'function load(){' +
+    '  google.script.run.withSuccessHandler(render).getBoardState();' +
+    '}' +
+    'function render(state){' +
+    '  document.getElementById("title").textContent = state.title;' +
+    '  var box = document.getElementById("board");' +
+    '  if (!state.items || state.items.length === 0) {' +
+    '    box.className = "empty";' +
+    '    box.textContent = "進行表がまだありません。シート側で「進行表をつくる」を実行してください。";' +
+    '    return;' +
+    '  }' +
+    '  box.className = "";' +
+    '  var html = "";' +
+    '  if (state.now) {' +
+    '    html += \'&lt;div class="now"&gt;&lt;div class="label"&gt;いまの種目&lt;/div&gt;\' +' +
+    '            \'&lt;div class="title"&gt;\' + esc(state.now.content) + \'&lt;/div&gt;\' +' +
+    '            \'&lt;div class="left"&gt;あと \' + state.now.left + \' 分&lt;/div&gt;&lt;/div&gt;\';' +
+    '  } else {' +
+    '    html += \'&lt;div class="now"&gt;&lt;div class="title"&gt;\' + esc(state.message) + \'&lt;/div&gt;&lt;/div&gt;\';' +
+    '  }' +
+    '  if (state.next) {' +
+    '    html += \'&lt;div class="next"&gt;&lt;span&gt;つぎ：&lt;/span&gt;\' + esc(state.next.start) + \' \' + esc(state.next.content) + \'&lt;/div&gt;\';' +
+    '  }' +
+    '  html += "&lt;ul&gt;";' +
+    '  state.items.forEach(function(item){' +
+    '    html += \'&lt;li class="\' + item.state + \'"&gt;&lt;span class="time"&gt;\' + esc(item.start) + \'-\' + esc(item.end) + \'&lt;/span&gt;\' + esc(item.content) + \'&lt;/li&gt;\';' +
+    '  });' +
+    '  html += "&lt;/ul&gt;";' +
+    '  box.innerHTML = html;' +
+    '}' +
+    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
+    'load();' +
+    'setInterval(load, 20 * 1000);' +
+    '&lt;/script&gt;';
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(APP_TITLE)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** 画面から20秒ごとに呼ばれて、いまの進行の状態を返します。本体はシートです。 */
+function getBoardState() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  const lastRow = sheet ? sheet.getLastRow() : 0;
+  const state = { title: APP_TITLE, items: [], now: null, next: null, message: '' };
+  if (lastRow &lt; 2) return state;
+
+  const values = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
+  const now = nowMinutes_();
+
+  values.forEach(function (row) {
+    const start = parseTime_(row[0]);
+    const end = parseTime_(row[2]);
+    const content = String(row[3]).trim();
+    if (start === null || end === null || !content) return;
+
+    let itemState = '';
+    if (now &gt;= start &amp;&amp; now &lt; end) itemState = 'now';
+    else if (now &gt;= end) itemState = 'done';
+
+    const item = {
+      start: formatTime_(start),
+      end: formatTime_(end),
+      content: content,
+      state: itemState
+    };
+    state.items.push(item);
+
+    if (itemState === 'now') {
+      state.now = { content: content, left: end - now };
+    }
+  });
+
+  // 「つぎ」は、まだ始まっていない項目のいちばん上です
+  for (let i = 0; i &lt; state.items.length; i++) {
+    if (state.items[i].state === '') { state.next = state.items[i]; break; }
+  }
+  if (!state.now) {
+    const allDone = state.items.length &gt; 0 &amp;&amp; state.items.every(function (x) { return x.state === 'done'; });
+    state.message = allDone ? '本日の日程は終了しました' : (state.next ? 'まもなく始まります' : '進行表の時間の外です');
+  }
+  return state;
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+function stopAutoFollow_() {
+  const triggers = ScriptApp.getProjectTriggers().filter(function (t) {
+    return t.getHandlerFunction() === 'markNow';
+  });
+  triggers.forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  return triggers.length;
+}
+
+/** 進行表シートを、なければ見出しつきで作ります。壊されても、開けば直ります。 */
+function ensureSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const header = sheet.getRange(1, 1, 1, HEADER.length);
+  if (String(header.getValues()[0][0]) !== HEADER[0]) {
+    header.setValues([HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    sheet.setFrozenRows(1);
+    makeItBig_(sheet);
+  }
+  return sheet;
+}
+
+/** 体育館の後ろからでも読めるように、シート側も大きくします。 */
+function makeItBig_(sheet) {
+  sheet.getRange(1, 1, sheet.getMaxRows(), HEADER.length).setFontSize(BIG_FONT).setVerticalAlignment('middle');
+  sheet.setColumnWidth(1, 120);
+  sheet.setColumnWidth(2, 120);
+  sheet.setColumnWidth(3, 120);
+  sheet.setColumnWidth(4, 420);
+  sheet.setColumnWidth(5, 200);
+  sheet.setColumnWidth(6, 220);
+  sheet.setRowHeights(1, sheet.getMaxRows(), 44);
+  sheet.getRange(1, 1, sheet.getMaxRows(), 3).setHorizontalAlignment('center');
+  sheet.getRange(1, 6, sheet.getMaxRows(), 1).setHorizontalAlignment('center');
+}
+
+/** 「8:30」を、0時からの分数に直します。読めないときは null。 */
+function parseTime_(text) {
+  // 手で打った「8:30」をスプレッドシートが時刻データに変えてしまうことがあるので、
+  // その場合は見た目どおりの時刻に読み直します
+  if (text instanceof Date) {
+    text = Utilities.formatDate(text, SpreadsheetApp.getActive().getSpreadsheetTimeZone(), 'H:mm');
+  }
+  const s = String(text).trim().replace('：', ':');
+  const m = s.match(/^(\d{1,2}):(\d{1,2})$/);
+  if (!m) return null;
+  const hour = Number(m[1]);
+  const minute = Number(m[2]);
+  if (hour &gt; 23 || minute &gt; 59) return null;
+  return hour * 60 + minute;
+}
+
+/** 分数を「8:30」の形に戻します。 */
+function formatTime_(minutes) {
+  const wrapped = ((minutes % 1440) + 1440) % 1440;
+  const hour = Math.floor(wrapped / 60);
+  const minute = wrapped % 60;
+  return hour + ':' + (minute &lt; 10 ? '0' + minute : minute);
+}
+
+/** いまの時刻を、日本時間で「0時からの分数」にします。 */
+function nowMinutes_() {
+  const text = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'HH:mm');
+  return parseTime_(text);
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第4章 提出状況を、ボードにする ============ -->
+<section class="chapter" id="c4">
+  <h2>第4章 提出状況を、ボードにする</h2>
+  <div class="recipe">
+    <p class="what">2冊目第7章の提出チェックくんに、集計だけが映るボードをつけたものです。誰が未提出かは画面に出ません。名簿はシートの中だけ＝画面の守りです。</p>
+    <div class="note">職員室向けなので、アクセスできるユーザーは<strong>「（学校名）内の全員」</strong>が基本です。シートそのものは、これまでどおり誰にも共有しません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>このコード（提出チェック表）に、続けて機能を足してください。
+・提出状況を映すWebアプリの画面を追加してください
+・画面に出すのは、提出物の名前・締切日・提出済みの人数と全体の人数・進み具合の棒グラフだけにしてください
+・誰が提出していないかの名前の一覧は、画面には絶対に出さないでください
+・全員が提出済みになったら、「全員そろいました」と表示してください
+・画面は1分ごとに自動で最新の状態に更新してください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（提出ボードくん.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 提出ボードくん —— GAS本3 第4章
+ *
+ * 2冊目第7章の「提出チェックくん」に、提出状況のボード（Web画面）をつけたものです。
+ *   ・シート側の機能は2冊目と同じ（チェックで提出日・リマインドメール・説明書シートつき）
+ *   ・デプロイすると、提出の集計だけが映るボードになります
+ *   ・ボードには「誰が未提出か」は出しません。名簿はシートの中だけ＝画面の守り
+ *
+ * 【準備は要りません】貼って1回実行すれば、名簿の枠と設定シートができます。
+ * 【置き場所】新しいスプレッドシート → 拡張機能 → Apps Script に貼ります。
+ */
+
+// ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const LIST_SHEET = '提出チェック';
+const CONF_SHEET = '設定';
+const MANUAL_SHEET = '説明書';
+// -------------------------------------------------------------------------
+
+const LIST_HEADER = ['氏名', 'メールアドレス', '提出', '提出日', '備考'];
+const CONF_ROWS = [
+  ['提出物の名前', '2学期の行事希望調査'],
+  ['締切日', ''],
+  ['担当者のメールアドレス', ''],
+  ['', ''],
+  ['※ 締切日は 2026-09-01 の形で入れてください', '']
+];
+const WEBHOOK_KEY = 'CHAT_WEBHOOK';
+
+/**
+ * シートを開いたときに動きます。
+ * メニューを出して、壊れているシートを黙って直します。
+ */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('✅ 提出チェック')
+    .addItem('未提出の人にリマインドを送る', 'remindNotYet')
+    .addItem('いまの状況を担当者にメールする', 'reportToOwner')
+    .addSeparator()
+    .addItem('締切の前日に、自動でリマインドする', 'setUpReminder')
+    .addItem('自動リマインドをやめる', 'removeReminder')
+    .addSeparator()
+    .addItem('シートを直す', 'repairSheets')
+    .addItem('説明書を作り直す', 'rebuildManual')
+    .addToUi();
+
+  ensureSheets_(); // 誰かがタブを消しても、次に誰かが開いた瞬間に生き返ります
+}
+
+/**
+ * チェックが入った瞬間に、提出日を勝手に入れます。
+ * これも「開いたときに動く仕掛け」の仲間で、このシートの中だけで完結しています。
+ */
+function onEdit(e) {
+  if (!e || !e.range) return;
+  const sheet = e.range.getSheet();
+  if (sheet.getName() !== LIST_SHEET) return;
+  if (e.range.getColumn() !== 3 || e.range.getRow() &lt; 2) return;
+
+  const stamp = e.range.getValue() === true
+    ? Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd')
+    : '';
+  sheet.getRange(e.range.getRow(), 4).setValue(stamp);
+}
+
+/**
+ * まだ提出していない人に、メールを送ります。
+ * メールアドレスが書いてある人にだけ届きます。
+ */
+function remindNotYet() {
+  const ui = SpreadsheetApp.getUi();
+  const conf = readConfig_();
+  const people = readPeople_();
+  const notYet = people.filter(function (p) { return !p.done &amp;&amp; p.email; });
+
+  if (notYet.length === 0) {
+    ui.alert('未提出の人はいません。（メールアドレスが空の行は数えていません）');
+    return;
+  }
+
+  const ok = ui.alert(
+    '未提出の ' + notYet.length + ' 人にメールを送ります',
+    notYet.map(function (p) { return '・' + p.name; }).join('\n'),
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (ok !== ui.Button.OK) return;
+
+  const title = conf['提出物の名前'] || '提出物';
+  const due = conf['締切日'] ? String(conf['締切日']) : '';
+  const url = SpreadsheetApp.getActive().getUrl();
+
+  notYet.forEach(function (p) {
+    GmailApp.sendEmail(
+      p.email,
+      '【提出のお願い】' + title,
+      p.name + ' 先生\n\n' +
+      'お忙しいところ失礼します。' + title + 'が未提出になっています。\n' +
+      (due ? '締切は ' + due + ' です。\n' : '') +
+      '\n提出状況はこちらで確認できます。\n' + url + '\n\n' +
+      '（このメールは提出チェック表から自動で送っています）'
+    );
+  });
+
+  postToChat_('【' + title + '】未提出 ' + notYet.length + ' 名にリマインドを送りました。');
+  ui.alert(notYet.length + ' 通、送りました。');
+}
+
+/** いまの提出状況を、担当者あてにメールします。 */
+function reportToOwner() {
+  const ui = SpreadsheetApp.getUi();
+  const conf = readConfig_();
+  const to = String(conf['担当者のメールアドレス'] || '').trim();
+
+  if (!to) {
+    ui.alert('「' + CONF_SHEET + '」シートの「担当者のメールアドレス」が空です。先に入れてください。');
+    return;
+  }
+
+  const people = readPeople_();
+  const done = people.filter(function (p) { return p.done; });
+  const notYet = people.filter(function (p) { return !p.done; });
+  const title = conf['提出物の名前'] || '提出物';
+
+  GmailApp.sendEmail(
+    to,
+    '【提出状況】' + title + '（' + done.length + '/' + people.length + '）',
+    title + ' の提出状況です。\n\n' +
+    '提出済み: ' + done.length + ' 名\n' +
+    '未提出　: ' + notYet.length + ' 名\n\n' +
+    (notYet.length ? '【未提出】\n' + notYet.map(function (p) { return '・' + p.name; }).join('\n') + '\n\n' : '') +
+    SpreadsheetApp.getActive().getUrl()
+  );
+  ui.alert('担当者（' + to + '）に送りました。');
+}
+
+/** 締切の前日の朝に、自動でリマインドが飛ぶようにします。 */
+function setUpReminder() {
+  const ui = SpreadsheetApp.getUi();
+  const conf = readConfig_();
+  const due = String(conf['締切日'] || '').trim();
+
+  if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(due)) {
+    ui.alert('「' + CONF_SHEET + '」シートの締切日を、2026-09-01 の形で入れてください。（いま: ' + due + '）');
+    return;
+  }
+
+  removeReminder_();
+  ScriptApp.newTrigger('autoRemind').timeBased().atHour(8).everyDays(1).create();
+  ui.alert('毎朝8時台に締切をみて、前日ならリマインドが飛ぶようにしました。');
+}
+
+/** 自動リマインドをやめます。去る日にも、これを押してください。 */
+function removeReminder() {
+  const count = removeReminder_();
+  SpreadsheetApp.getUi().alert('自動リマインドを ' + count + ' 件、止めました。');
+}
+
+/** 毎朝の自動実行から呼ばれます。締切の前日だけ働きます。 */
+function autoRemind() {
+  const conf = readConfig_();
+  const due = String(conf['締切日'] || '').trim();
+  if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(due)) return;
+
+  const n = due.split('-').map(Number);
+  const dueDay = Date.UTC(n[0], n[1] - 1, n[2]);
+  const todayText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+  const t = todayText.split('-').map(Number);
+  const today = Date.UTC(t[0], t[1] - 1, t[2]);
+
+  if (dueDay - today !== 24 * 60 * 60 * 1000) return; // 前日以外は、何もしない
+
+  const title = conf['提出物の名前'] || '提出物';
+  const url = SpreadsheetApp.getActive().getUrl();
+  const notYet = readPeople_().filter(function (p) { return !p.done &amp;&amp; p.email; });
+
+  notYet.forEach(function (p) {
+    GmailApp.sendEmail(
+      p.email,
+      '【明日締切】' + title,
+      p.name + ' 先生\n\n' + title + 'の締切は明日（' + due + '）です。\n' + url
+    );
+  });
+  postToChat_('【' + title + '】明日が締切です。未提出 ' + notYet.length + ' 名。' + url);
+}
+
+/** 壊れたシートを直します。名簿の中身は消えません。 */
+function repairSheets() {
+  ensureSheets_();
+  SpreadsheetApp.getUi().alert('シートを整えました。');
+}
+
+/** 説明書のシートを、最新の内容で作り直します。消されたときも、書き換えられたときも、これ1発です。 */
+function rebuildManual() {
+  writeManual_(true);
+  SpreadsheetApp.getUi().alert('「' + MANUAL_SHEET + '」シートを作り直しました。');
+}
+
+
+/**
+ * ここが今回の追加です。提出状況のボードを返します。
+ * 出すのは集計だけ。名簿（誰が出していないか）は画面に出しません。
+ */
+function doGet() {
+  const html =
+    '&lt;style&gt;' +
+    'body{font-family:sans-serif;margin:0;background:#f6f7f9;color:#202124;}' +
+    'header{background:#e8710a;color:#fff;padding:14px 16px;font-size:20px;font-weight:bold;}' +
+    'main{padding:16px;max-width:640px;margin:0 auto;}' +
+    '.card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.12);}' +
+    '.title{font-size:22px;font-weight:bold;margin-bottom:4px;}' +
+    '.due{font-size:15px;color:#5f6368;margin-bottom:12px;}' +
+    '.count{font-size:40px;font-weight:bold;}' +
+    '.count small{font-size:18px;color:#5f6368;font-weight:normal;}' +
+    '.bar{height:16px;background:#f1f3f4;border-radius:8px;overflow:hidden;margin:10px 0 4px;}' +
+    '.bar div{height:100%;background:#188038;}' +
+    '.done{color:#188038;font-weight:bold;font-size:18px;}' +
+    'footer{text-align:center;color:#9aa0a6;font-size:12px;padding:12px 0 20px;}' +
+    '.loading{text-align:center;color:#5f6368;padding:24px 0;}' +
+    '&lt;/style&gt;' +
+    '&lt;header id="head"&gt;提出状況&lt;/header&gt;' +
+    '&lt;main&gt;&lt;div id="board" class="loading"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;' +
+    '&lt;footer&gt;このボードは提出チェック表の集計だけを表示しています&lt;/footer&gt;' +
+    '&lt;script&gt;' +
+    'function load(){ google.script.run.withSuccessHandler(render).getBoardData(); }' +
+    'function render(d){' +
+    '  document.getElementById("head").textContent = d.title + " の提出状況";' +
+    '  var rate = d.total ? Math.round(d.done * 100 / d.total) : 0;' +
+    '  var html = \'&lt;div class="card"&gt;\' +' +
+    '    \'&lt;div class="title"&gt;\' + esc(d.title) + \'&lt;/div&gt;\' +' +
+    '    (d.due ? \'&lt;div class="due"&gt;締切: \' + esc(d.due) + \'&lt;/div&gt;\' : "") +' +
+    '    \'&lt;div class="count"&gt;\' + d.done + \' / \' + d.total + \'&lt;small&gt; 人が提出済み&lt;/small&gt;&lt;/div&gt;\' +' +
+    '    \'&lt;div class="bar"&gt;&lt;div style="width:\' + rate + \'%"&gt;&lt;/div&gt;&lt;/div&gt;\' +' +
+    '    (d.done === d.total &amp;&amp; d.total &gt; 0 ? \'&lt;div class="done"&gt;全員そろいました&lt;/div&gt;\' : "") +' +
+    '    \'&lt;/div&gt;\';' +
+    '  document.getElementById("board").className = "";' +
+    '  document.getElementById("board").innerHTML = html;' +
+    '}' +
+    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
+    'load();' +
+    'setInterval(load, 60 * 1000);' +
+    '&lt;/script&gt;';
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle('提出状況')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** 画面から呼ばれて、集計だけを返します。名前の一覧は返しません。 */
+function getBoardData() {
+  const conf = readConfig_();
+  const people = readPeople_();
+  return {
+    title: String(conf['提出物の名前'] || '提出物'),
+    due: String(conf['締切日'] || ''),
+    total: people.length,
+    done: people.filter(function (p) { return p.done; }).length
+  };
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/** 必要なシートと見出しを、なければ作ります。 */
+function ensureSheets_() {
+  const ss = SpreadsheetApp.getActive();
+
+  let list = ss.getSheetByName(LIST_SHEET);
+  if (!list) list = ss.insertSheet(LIST_SHEET, 0);
+  const listHeader = list.getRange(1, 1, 1, LIST_HEADER.length);
+  if (String(listHeader.getValues()[0][0]) !== LIST_HEADER[0]) {
+    listHeader.setValues([LIST_HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    list.setFrozenRows(1);
+    list.setColumnWidth(1, 160);
+    list.setColumnWidth(2, 260);
+    list.setColumnWidth(5, 300);
+    list.getRange(2, 3, Math.max(1, list.getMaxRows() - 1), 1).insertCheckboxes();
+  }
+
+  let conf = ss.getSheetByName(CONF_SHEET);
+  if (!conf) {
+    conf = ss.insertSheet(CONF_SHEET);
+    conf.getRange(1, 1, CONF_ROWS.length, 2).setValues(CONF_ROWS);
+    conf.getRange(1, 1, CONF_ROWS.length, 1).setFontWeight('bold');
+    conf.setColumnWidth(1, 240);
+    conf.setColumnWidth(2, 320);
+  }
+
+  writeManual_(false); // 説明書も、消されていたら作り直します
+}
+
+/** 説明書シートの中身。ICTが苦手な人が読む前提で書いてあります。 */
+const MANUAL_LINES = [
+  '【説明書】提出チェックくん の使い方',
+  '（このシートは消えても大丈夫です。上のメニュー「✅ 提出チェック」→「説明書を作り直す」で、いつでも元に戻ります）',
+  '',
+  '■ これは何をするもの？',
+  '提出物を集める人のためのチェック表です。名簿にチェックを入れると提出日が自動で記録され、まだ出していない人にだけ、お願いのメールを送れます。',
+  '',
+  '■ ふだんの使い方（チェックを付ける）',
+  '1. 画面のいちばん下に並んでいる「提出チェック」というタブをクリックします',
+  '2. 出してくれた人の「提出」の列にある四角（チェックボックス）をクリックします',
+  '3. 隣の「提出日」は自動で入ります。手で書く必要はありません。間違えてチェックしたときは、もう一度クリックして外せば提出日も消えます',
+  '',
+  '■ 未提出の人にメールを送りたいとき',
+  '1. 画面の上のほうにある「✅ 提出チェック」というメニューをクリックします（「ヘルプ」の右側です。見当たらないときは、ページを再読み込みしてください）',
+  '2. 「未提出の人にリマインドを送る」を選びます',
+  '3. 送る相手の名前が一覧で出ます。確認して「OK」を押すと、まだ出していない人にだけメールが届きます。提出済みの人には届きません',
+  '',
+  '■ 自動でリマインドさせたいとき',
+  '1. 「設定」タブに、提出物の名前・締切日（2026-09-01 のような形）・担当者のメールアドレスを書きます',
+  '2. メニューから「締切の前日に、自動でリマインドする」を選びます。締切の前日の朝、未提出の人に自動でメールが飛びます',
+  '3. やめたいときは、メニューの「自動リマインドをやめる」を選びます',
+  '',
+  '■ 困ったとき',
+  '・タブをうっかり消してしまった → このファイルを閉じて開き直すと、自動で元に戻ります',
+  '・メニューが出てこない → ページを再読み込み（更新）してください',
+  '・この説明書が消えた、内容が変になった → メニューの「説明書を作り直す」で元に戻ります',
+  '',
+  '■ さわらないでほしい場所',
+  '・「提出チェック」タブの1行目の見出し（氏名・メールアドレス…）',
+  '・「設定」タブの左の列（項目の名前）',
+  'ここを書き換えると動かなくなります。もし書き換えてしまっても、ファイルを開き直せば直ります。'
+];
+
+/** 説明書シートを書きます。force が true のときは、あっても書き直します。 */
+function writeManual_(force) {
+  const ss = SpreadsheetApp.getActive();
+  let sheet = ss.getSheetByName(MANUAL_SHEET);
+  if (sheet &amp;&amp; !force) return;
+  if (!sheet) sheet = ss.insertSheet(MANUAL_SHEET);
+
+  sheet.clear();
+  sheet.getRange(1, 1, MANUAL_LINES.length, 1)
+    .setValues(MANUAL_LINES.map(function (t) { return [t]; }))
+    .setWrap(true)
+    .setVerticalAlignment('top');
+  sheet.getRange(1, 1).setFontWeight('bold').setFontSize(14);
+  sheet.setColumnWidth(1, 760);
+}
+
+/** 設定シートを、項目名から引ける形にして返します。 */
+function readConfig_() {
+  ensureSheets_();
+  const sheet = SpreadsheetApp.getActive().getSheetByName(CONF_SHEET);
+  const values = sheet.getRange(1, 1, Math.max(1, sheet.getLastRow()), 2).getValues();
+  const conf = {};
+  values.forEach(function (row) {
+    const key = String(row[0]).trim();
+    if (key) conf[key] = row[1];
+  });
+  return conf;
+}
+
+/** 名簿を読み取ります。 */
+function readPeople_() {
+  ensureSheets_();
+  const sheet = SpreadsheetApp.getActive().getSheetByName(LIST_SHEET);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+
+  return sheet.getRange(2, 1, lastRow - 1, LIST_HEADER.length).getValues()
+    .filter(function (row) { return String(row[0]).trim(); })
+    .map(function (row) {
+      return {
+        name: String(row[0]).trim(),
+        email: String(row[1]).trim(),
+        done: row[2] === true
+      };
+    });
+}
+
+/**
+ * 職員室のGoogle Chatにも投稿します。
+ * 学校のWorkspaceでWebhookが使えるときだけ働きます。使えなくても、メールは届きます。
+ *
+ * 合鍵（Webhook URL）は、コードではなく金庫にしまいます。
+ * プロジェクトの設定 → スクリプト プロパティ に、
+ * 　プロパティ: CHAT_WEBHOOK
+ * 　値　　　　: https://chat.googleapis.com/... （発行されたURL）
+ * を登録すると、ここが動き出します。
+ */
+function postToChat_(message) {
+  const url = PropertiesService.getScriptProperties().getProperty(WEBHOOK_KEY);
+  if (!url) return; // 金庫が空なら、黙って何もしません
+
+  try {
+    UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json; charset=UTF-8',
+      payload: JSON.stringify({ text: message }),
+      muteHttpExceptions: true
+    });
+  } catch (e) {
+    console.log('Chatへの投稿に失敗しました: ' + e.message);
+  }
+}
+
+function removeReminder_() {
+  const triggers = ScriptApp.getProjectTriggers().filter(function (t) {
+    return t.getHandlerFunction() === 'autoRemind';
+  });
+  triggers.forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  return triggers.length;
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第5章 「今日の学校」ページ ============ -->
+<section class="chapter" id="c5">
+  <h2>第5章 「今日の学校」ページ</h2>
+  <div class="recipe">
+    <p class="what">2冊目第5章の年間予定シートくんに、「今日の学校」ページをつけたものです。今日の行事・給食と、この先1週間の行事が1枚で見られます。新しいシートは作りません。</p>
+    <div class="note">シートがまだ空なら、メニューの「1年分の日付をつくる」から（2冊目と同じ手順）。行事をシートに書き足せば、ページも次に開いたときから変わります。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>このコード（年間予定シートを作るGAS）に、続けて機能を足してください。
+・「今日の学校」というWebアプリの画面を追加してください
+・画面には、今日の日付・出校日かどうか・給食のありなし・今日の行事と備考を表示してください
+・その下に、明日から1週間分の行事がある日だけを一覧で表示してください
+・年間予定シートに行事や備考を書き足したら、画面にもそのまま反映されるようにしてください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・スマホで見やすい大きさにしてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（今日の学校くん.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 今日の学校くん —— GAS本3 第5章
+ *
+ * 2冊目第5章の「年間予定シートくん」に、「今日の学校」ページ（Web画面）をつけたものです。
+ *   ・シート側の機能は2冊目と同じ（1年分の骨組みづくり・今日へジャンプ・出校/給食の入れ直し）
+ *   ・デプロイすると、今日の行事・給食と、向こう1週間の行事が1枚で見られます
+ *   ・本体は「年間予定」シート。行事も備考も、シートに書けば画面に出ます
+ *
+ * 【準備は要りません】日付が並んだシートを持っていなくても、この道具が作ります。
+ * 【置き場所】新しいスプレッドシート → 拡張機能 → Apps Script に貼ります。
+ */
+
+// ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const SHEET_NAME = '年間予定';   // ▼ シートの名前
+const SATURDAY_COLOR = '#e8f0fe'; // ▼ 土曜の色
+const SUNDAY_COLOR = '#fce8e6';   // ▼ 日曜・祝日の色
+const TODAY_COLOR = '#fff2cc';    // ▼ 今日の行の色
+// -------------------------------------------------------------------------
+
+const HEADER = ['日付', '曜日', '出校', '給食', '行事', '備考'];
+const HOLIDAY_CALENDAR_ID = 'ja.japanese#holiday@group.v.calendar.google.com';
+
+/**
+ * シートを開いたときに動きます。
+ * ここでやるのは「メニューを出す」と「今日へ飛ぶ」だけ。
+ * 開いたときに動く仕掛け（簡易トリガー）は、カレンダーやメールに触ると黙って止まるからです。
+ */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('📅 年間予定')
+    .addItem('1年分の日付をつくる', 'buildYear')
+    .addItem('今日へジャンプ', 'jumpToToday')
+    .addItem('出校・給食を入れ直す', 'refillSchoolDays')
+    .addToUi();
+
+  jumpToToday();
+}
+
+/**
+ * 1年分の行を作ります。年度を聞かれるので、西暦4桁で答えてください。
+ * すでに書いてある行事や備考は、聞いたうえで残せます。
+ */
+function buildYear() {
+  const ui = SpreadsheetApp.getUi();
+  const thisYear = Number(Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy'));
+  const thisMonth = Number(Utilities.formatDate(new Date(), 'Asia/Tokyo', 'MM'));
+  const defaultYear = (thisMonth &gt;= 4) ? thisYear : thisYear - 1;
+
+  const answer = ui.prompt(
+    '何年度の予定表を作りますか',
+    '西暦4桁で入力してください（例: ' + defaultYear + '）。\n' +
+    defaultYear + ' と入れると、' + defaultYear + '年4月1日から' + (defaultYear + 1) + '年3月31日までを作ります。',
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (answer.getSelectedButton() !== ui.Button.OK) return;
+
+  const year = Number(String(answer.getResponseText()).trim());
+  if (!year || year &lt; 2000 || year &gt; 2100) {
+    ui.alert('西暦4桁の数字で入力してください。（入力されたもの: ' + answer.getResponseText() + '）');
+    return;
+  }
+
+  const ss = SpreadsheetApp.getActive();
+  ss.setSpreadsheetTimeZone('Asia/Tokyo'); // 日付がずれないように、先に日本時間にそろえます
+
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (sheet &amp;&amp; sheet.getLastRow() &gt; 1) {
+    const ok = ui.alert(
+      '「' + SHEET_NAME + '」にはすでに中身があります',
+      '作り直すと、行事や備考も消えます。続けますか。',
+      ui.ButtonSet.OK_CANCEL
+    );
+    if (ok !== ui.Button.OK) return;
+    sheet.clear();
+    sheet.setConditionalFormatRules([]);
+  }
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const holidays = fetchHolidays_(year);
+  const rows = [];
+  const holidayRows = [];
+
+  let cursor = Date.UTC(year, 3, 1);          // 4月1日
+  const last = Date.UTC(year + 1, 2, 31);     // 翌年3月31日
+
+  while (cursor &lt;= last) {
+    const d = new Date(cursor);
+    const key = Utilities.formatDate(d, 'UTC', 'yyyy-MM-dd');
+    const weekday = ['日', '月', '火', '水', '木', '金', '土'][d.getUTCDay()];
+    const holidayName = holidays[key] || '';
+    const closed = (weekday === '土' || weekday === '日' || holidayName !== '');
+
+    rows.push([
+      new Date(cursor + 3 * 60 * 60 * 1000), // 日本時間の正午。どのタイムゾーンでも日付がずれません
+      weekday,
+      closed ? '／' : '◯',
+      closed ? '／' : '◯',
+      holidayName,
+      ''
+    ]);
+    if (holidayName) holidayRows.push(rows.length + 1); // 見出しの分で +1
+
+    cursor += 24 * 60 * 60 * 1000;
+  }
+
+  sheet.getRange(1, 1, 1, HEADER.length).setValues([HEADER])
+    .setFontWeight('bold').setBackground('#e8eaed').setHorizontalAlignment('center');
+  sheet.getRange(2, 1, rows.length, HEADER.length).setValues(rows);
+  sheet.getRange(2, 1, rows.length, 1).setNumberFormat('yyyy/MM/dd');
+  sheet.getRange(2, 2, rows.length, 3).setHorizontalAlignment('center');
+  sheet.setFrozenRows(1);
+  sheet.setColumnWidth(1, 110);
+  sheet.setColumnWidth(2, 50);
+  sheet.setColumnWidth(3, 50);
+  sheet.setColumnWidth(4, 50);
+  sheet.setColumnWidth(5, 220);
+  sheet.setColumnWidth(6, 320);
+
+  // 祝日の行だけ、先に色を塗っておきます
+  holidayRows.forEach(function (row) {
+    sheet.getRange(row, 1, 1, HEADER.length).setBackground(SUNDAY_COLOR);
+  });
+
+  applyColorRules_(sheet, rows.length);
+  jumpToToday();
+
+  ui.alert(rows.length + '日分の行を作りました。祝日は ' + Object.keys(holidays).length + ' 日、行事の列に名前が入っています。');
+}
+
+/**
+ * 今日の行までスクロールします。
+ * 今日が載っていない年度の表なら、いちばん上に戻るだけです。
+ */
+function jumpToToday() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  if (!sheet) return;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return;
+
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+  const dates = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+
+  for (let i = 0; i &lt; dates.length; i++) {
+    const value = dates[i][0];
+    if (!(value instanceof Date)) continue;
+    if (Utilities.formatDate(value, 'Asia/Tokyo', 'yyyy-MM-dd') === today) {
+      sheet.setActiveSelection(sheet.getRange(i + 2, 1, 1, HEADER.length));
+      return;
+    }
+  }
+  sheet.setActiveSelection(sheet.getRange(2, 1));
+}
+
+/**
+ * 出校・給食の◯と／を、日付から判定し直します。
+ * 土日祝を休みとして入れ直すので、行事で振替になった日は手で直してください。
+ */
+function refillSchoolDays() {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  if (!sheet || sheet.getLastRow() &lt; 2) {
+    ui.alert('先に「1年分の日付をつくる」を実行してください。');
+    return;
+  }
+
+  const lastRow = sheet.getLastRow();
+  const dates = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  const first = dates[0][0];
+  if (!(first instanceof Date)) {
+    ui.alert('日付の列（A列）に日付が入っていません。');
+    return;
+  }
+
+  const year = Number(Utilities.formatDate(first, 'Asia/Tokyo', 'yyyy'));
+  const month = Number(Utilities.formatDate(first, 'Asia/Tokyo', 'MM'));
+  const holidays = fetchHolidays_(month &gt;= 4 ? year : year - 1);
+
+  const marks = dates.map(function (row) {
+    const value = row[0];
+    if (!(value instanceof Date)) return ['', ''];
+    const key = Utilities.formatDate(value, 'Asia/Tokyo', 'yyyy-MM-dd');
+    const n = key.split('-').map(Number);
+    const day = new Date(Date.UTC(n[0], n[1] - 1, n[2])).getUTCDay(); // 0=日 6=土
+    const closed = (day === 0 || day === 6 || holidays[key]);
+    return closed ? ['／', '／'] : ['◯', '◯'];
+  });
+
+  sheet.getRange(2, 3, marks.length, 2).setValues(marks);
+  ui.alert('出校・給食を入れ直しました。');
+}
+
+
+/**
+ * ここが今回の追加です。「今日の学校」ページを返します。
+ * 年間予定シートから、今日の行と、向こう1週間の行事を拾って映すだけです。
+ */
+function doGet() {
+  const html =
+    '&lt;style&gt;' +
+    'body{font-family:sans-serif;margin:0;background:#f6f7f9;color:#202124;}' +
+    'header{background:#188038;color:#fff;padding:14px 16px;font-size:20px;font-weight:bold;}' +
+    'main{padding:12px;max-width:640px;margin:0 auto;}' +
+    '.card{background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.12);}' +
+    '.today .date{font-size:24px;font-weight:bold;}' +
+    '.today .badges{margin:8px 0;}' +
+    '.badge{display:inline-block;font-size:15px;padding:4px 10px;border-radius:14px;margin-right:8px;background:#e6f4ea;color:#137333;}' +
+    '.badge.off{background:#fce8e6;color:#c5221f;}' +
+    '.event{font-size:19px;margin:6px 0;}' +
+    '.note{font-size:15px;color:#5f6368;}' +
+    'h2{font-size:16px;margin:4px 0 8px;color:#5f6368;}' +
+    'ul{list-style:none;margin:0;padding:0;}' +
+    'li{font-size:16px;padding:6px 0;border-bottom:1px solid #eee;}' +
+    'li:last-child{border-bottom:none;}' +
+    'li .d{display:inline-block;min-width:96px;color:#188038;font-weight:bold;}' +
+    '.empty{color:#5f6368;padding:16px 0;text-align:center;}' +
+    '&lt;/style&gt;' +
+    '&lt;header&gt;今日の学校&lt;/header&gt;' +
+    '&lt;main&gt;&lt;div id="box" class="empty"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;' +
+    '&lt;script&gt;' +
+    'google.script.run.withSuccessHandler(render).getTodayData();' +
+    'function render(d){' +
+    '  var box = document.getElementById("box");' +
+    '  if (!d.ready) { box.textContent = "年間予定シートがまだありません。シート側で「1年分の日付をつくる」を実行してください。"; return; }' +
+    '  box.className = ""; var html = "";' +
+    '  html += \'&lt;div class="card today"&gt;&lt;div class="date"&gt;\' + esc(d.today.label) + \'&lt;/div&gt;&lt;div class="badges"&gt;\' +' +
+    '    \'&lt;span class="badge\' + (d.today.school ? "" : " off") + \'"&gt;\' + (d.today.school ? "出校日" : "お休み") + \'&lt;/span&gt;\' +' +
+    '    (d.today.school ? \'&lt;span class="badge\' + (d.today.lunch ? "" : " off") + \'"&gt;\' + (d.today.lunch ? "給食あり" : "給食なし") + \'&lt;/span&gt;\' : "") +' +
+    '    \'&lt;/div&gt;\' +' +
+    '    (d.today.event ? \'&lt;div class="event"&gt;\' + esc(d.today.event) + \'&lt;/div&gt;\' : \'&lt;div class="note"&gt;今日の行事は登録されていません&lt;/div&gt;\') +' +
+    '    (d.today.note ? \'&lt;div class="note"&gt;\' + esc(d.today.note) + \'&lt;/div&gt;\' : "") + \'&lt;/div&gt;\';' +
+    '  html += \'&lt;div class="card"&gt;&lt;h2&gt;この先1週間の行事&lt;/h2&gt;\';' +
+    '  if (d.week.length === 0) { html += \'&lt;div class="empty"&gt;この先1週間の行事はありません&lt;/div&gt;\'; }' +
+    '  else { html += "&lt;ul&gt;"; d.week.forEach(function(w){ html += \'&lt;li&gt;&lt;span class="d"&gt;\' + esc(w.label) + \'&lt;/span&gt;\' + esc(w.event) + \'&lt;/li&gt;\'; }); html += "&lt;/ul&gt;"; }' +
+    '  html += \'&lt;/div&gt;\';' +
+    '  box.innerHTML = html;' +
+    '}' +
+    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
+    '&lt;/script&gt;';
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle('今日の学校')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** 画面から呼ばれて、今日の行と向こう1週間の行事を返します。本体はシートです。 */
+function getTodayData() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  const lastRow = sheet ? sheet.getLastRow() : 0;
+  if (lastRow &lt; 2) return { ready: false };
+
+  const values = sheet.getRange(2, 1, lastRow - 1, HEADER.length).getValues();
+  const todayText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+  const result = { ready: true, today: { label: labelOf_(todayText, ''), school: false, lunch: false, event: '', note: '' }, week: [] };
+
+  values.forEach(function (row) {
+    const dateText = toDateText_(row[0]);
+    if (!dateText) return;
+    const diff = dayDiff_(todayText, dateText);
+    if (diff === 0) {
+      result.today = {
+        label: labelOf_(dateText, String(row[1])),
+        school: String(row[2]).trim() === '◯',
+        lunch: String(row[3]).trim() === '◯',
+        event: String(row[4]).trim(),
+        note: String(row[5]).trim()
+      };
+    } else if (diff &gt; 0 &amp;&amp; diff &lt;= 7 &amp;&amp; String(row[4]).trim()) {
+      result.week.push({ label: labelOf_(dateText, String(row[1])), event: String(row[4]).trim() });
+    }
+  });
+  return result;
+}
+
+/** シートの日付セル（文字でもDateでも）を「2026-09-01」の形にします。 */
+function toDateText_(value) {
+  if (value instanceof Date) {
+    return Utilities.formatDate(value, SpreadsheetApp.getActive().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
+  }
+  const m = String(value).trim().match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+  if (!m) return '';
+  return m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2);
+}
+
+/** 「2026-09-01」どうしの日数差を返します。 */
+function dayDiff_(fromText, toText) {
+  const a = fromText.split('-').map(Number);
+  const b = toText.split('-').map(Number);
+  return Math.round((Date.UTC(b[0], b[1] - 1, b[2]) - Date.UTC(a[0], a[1] - 1, a[2])) / (24 * 60 * 60 * 1000));
+}
+
+/** 「9月1日（月）」の形の表示を作ります。 */
+function labelOf_(dateText, weekday) {
+  const n = dateText.split('-').map(Number);
+  const w = weekday || ['日', '月', '火', '水', '木', '金', '土'][new Date(Date.UTC(n[0], n[1] - 1, n[2])).getUTCDay()];
+  return n[1] + '月' + n[2] + '日（' + w + '）';
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/**
+ * 色は、コードではなく「条件付き書式」に任せます。
+ * こうしておくと、日付を書き足しても色が勝手についてきます。
+ */
+function applyColorRules_(sheet, rowCount) {
+  const range = sheet.getRange(2, 1, rowCount, HEADER.length);
+  const rules = [
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=$A2=TODAY()')
+      .setBackground(TODAY_COLOR)
+      .setRanges([range]).build(),
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=WEEKDAY($A2)=7')
+      .setBackground(SATURDAY_COLOR)
+      .setRanges([range]).build(),
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=WEEKDAY($A2)=1')
+      .setBackground(SUNDAY_COLOR)
+      .setRanges([range]).build()
+  ];
+  sheet.setConditionalFormatRules(rules);
+}
+
+/** 日本の祝日を、日付をキーにした一覧にして返します。 */
+function fetchHolidays_(year) {
+  const map = {};
+  const calendar = CalendarApp.getCalendarById(HOLIDAY_CALENDAR_ID);
+  if (!calendar) {
+    // 番人：祝日カレンダーが読めなくても、黙って止まらない
+    SpreadsheetApp.getActive().toast('祝日カレンダーが読めませんでした。土日だけで判定します。', 'お知らせ', 8);
+    return map;
+  }
+
+  const start = new Date(Date.UTC(year, 3, 1) - 9 * 60 * 60 * 1000);
+  const end = new Date(Date.UTC(year + 1, 3, 1) - 9 * 60 * 60 * 1000);
+  calendar.getEvents(start, end).forEach(function (event) {
+    const key = Utilities.formatDate(event.getStartTime(), 'Asia/Tokyo', 'yyyy-MM-dd');
+    map[key] = event.getTitle();
+  });
+  return map;
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第6章 教室に、ボタンを置く ============ -->
+<section class="chapter" id="c6">
+  <h2>第6章 教室に、ボタンを置く</h2>
+  <div class="recipe">
+    <p class="what">子どもが出席番号を選んでボタンを押すと、あなたにメールが届き、ログのシートに1行残ります。画面に名前は出しません。1冊目最終章「そうだんボタン」の、この本の形での作り直しです。</p>
+    <div class="note">通知の宛先は、実行したあなたのアドレスに自動でなります（▼ゼロ）。教室に置く前に、管理職への一言を（1冊目からの作法）。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>作りたいもの：教室のタブレットに置く、子ども用の連絡ボタンのWebアプリです。
+・画面には、出席番号を選ぶところと、大きなボタンを2つ置いてください。「せんせいに そうだんしたい」「ちょっと はなしを きいてほしい」です
+・子どもが読めるように、画面の文字はひらがな中心で大きくしてください
+・ボタンが押されたら、「そうだんログ」シートに日時・出席番号・ボタンの種類を1行追加してください
+・あわせて、このスプレッドシートの持ち主（私）にメールで知らせてください。宛先は私が入力しなくても、自動で私になるようにしてください
+・子どもの画面には、名前は一切表示しないでください。押したあとは「せんせいに つたえたよ。」とだけ出してください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * そうだんボタンくん —— GAS本3 第6章
+ *
+ * 1冊目の最終章で作った「そうだんボタン」の、この本の形での作り直しです。
+ *   ・子どもが出席番号を選んでボタンを押すと、先生（あなた）にメールが届きます
+ *   ・押した記録は「そうだんログ」シートに残ります（本体はシート）
+ *   ・画面に名前は出しません。選ぶのは出席番号だけ＝子どもが使う画面の線引き
+ *
+ * 【準備は要りません】シートは自動でできます。通知は自分あてに届きます。
+ * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script
+ */
+
+// ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const APP_TITLE = 'せんせいに つたえる ボタン';  // ▼ 画面の見出し
+const CLASS_SIZE = 40;                            // ▼ 出席番号をいくつまで出すか
+const SHEET_NAME = 'そうだんログ';
+// -------------------------------------------------------------------------
+
+const HEADER = ['日時', '出席番号', 'ボタン'];
+const BUTTONS = [
+  { key: 'そうだん', label: 'せんせいに そうだんしたい' },
+  { key: 'はなす',   label: 'ちょっと はなしを きいてほしい' }
+];
+
+/** シートを開いたときにメニューを出して、壊れているシートを黙って直します。 */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('🔔 そうだんボタン')
+    .addItem('ログのシートを整える', 'repairSheet')
+    .addToUi();
+
+  getOrCreateSheet_();
+}
+
+/** メニューから押したとき用。 */
+function repairSheet() {
+  getOrCreateSheet_();
+  SpreadsheetApp.getUi().alert('「' + SHEET_NAME + '」シートを整えました。');
+}
+
+/** 子どもが開く画面です。 */
+function doGet() {
+  let numbers = '';
+  for (let i = 1; i &lt;= CLASS_SIZE; i++) {
+    numbers += '&lt;option value="' + i + '"&gt;' + i + 'ばん&lt;/option&gt;';
+  }
+  let buttons = '';
+  BUTTONS.forEach(function (b) {
+    buttons += '&lt;button class="big" onclick="send(\'' + b.key + '\')"&gt;' + b.label + '&lt;/button&gt;';
+  });
+
+  const html =
+    '&lt;style&gt;' +
+    'body{font-family:sans-serif;margin:0;background:#fffde7;color:#202124;}' +
+    'header{background:#f9a825;color:#fff;padding:14px 16px;font-size:22px;font-weight:bold;}' +
+    'main{padding:16px;max-width:480px;margin:0 auto;}' +
+    'label{display:block;font-size:18px;margin:8px 0;}' +
+    'select{font-size:22px;padding:10px;border-radius:8px;border:1px solid #dadce0;width:100%;}' +
+    'button.big{display:block;width:100%;font-size:22px;padding:18px;margin:14px 0;border-radius:12px;border:none;background:#f9a825;color:#fff;font-weight:bold;}' +
+    'button.big:active{background:#f57f17;}' +
+    '#message{display:none;font-size:20px;background:#e6f4ea;color:#137333;padding:16px;border-radius:12px;margin-top:12px;text-align:center;}' +
+    '&lt;/style&gt;' +
+    '&lt;header&gt;' + esc_(APP_TITLE) + '&lt;/header&gt;' +
+    '&lt;main&gt;' +
+    '&lt;label for="num"&gt;じぶんの しゅっせきばんごうを えらんでね&lt;/label&gt;' +
+    '&lt;select id="num"&gt;' + numbers + '&lt;/select&gt;' +
+    buttons +
+    '&lt;div id="message"&gt;&lt;/div&gt;' +
+    '&lt;/main&gt;' +
+    '&lt;script&gt;' +
+    'function send(kind){' +
+    '  var num = document.getElementById("num").value;' +
+    '  google.script.run.withSuccessHandler(function(){' +
+    '    var m = document.getElementById("message");' +
+    '    m.style.display = "block";' +
+    '    m.textContent = "せんせいに つたえたよ。";' +
+    '  }).recordPress(num, kind);' +
+    '}' +
+    '&lt;/script&gt;';
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(APP_TITLE)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** ボタンが押されたら、ログに1行足して、先生にメールします。 */
+function recordPress(number, kind) {
+  const sheet = getOrCreateSheet_();
+  const stamp = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm');
+  const button = BUTTONS.filter(function (b) { return b.key === String(kind); })[0];
+  const label = button ? button.label : String(kind);
+
+  sheet.appendRow([stamp, Number(number), label]);
+
+  MailApp.sendEmail(
+    Session.getEffectiveUser().getEmail(),
+    '【そうだんボタン】' + number + '番',
+    number + '番の子が「' + label + '」を押しました。（' + stamp + '）\n' +
+    'ログ: ' + SpreadsheetApp.getActive().getUrl()
+  );
+  return true;
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/** ログのシートを、なければ見出しつきで作ります。 */
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  ss.setSpreadsheetTimeZone('Asia/Tokyo');
+
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const header = sheet.getRange(1, 1, 1, HEADER.length);
+  if (String(header.getValues()[0][0]) !== HEADER[0]) {
+    header.setValues([HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 150);
+    sheet.setColumnWidth(2, 90);
+    sheet.setColumnWidth(3, 280);
+  }
+  return sheet;
+}
+
+/** 画面に出す文字を、そのままの形で安全に表示するための変換です。 */
+function esc_(text) {
+  return String(text)
+    .replace(/&amp;/g, '&amp;amp;')
+    .replace(/&lt;/g, '&amp;lt;')
+    .replace(/&gt;/g, '&amp;gt;')
+    .replace(/"/g, '&amp;quot;');
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第7章 予約を、受け付ける——保護者面談 ============ -->
+<section class="chapter" id="c7">
+  <h2>第7章 予約を、受け付ける——保護者面談</h2>
+  <div class="recipe">
+    <p class="what">保護者がスマホで面談を予約するWebアプリです。空き枠だけがボタンで並び、埋まった枠は「予約済み」とだけ出ます。同じ枠に同時に2人が申し込んでも、先の1人だけが確定します。</p>
+    <div class="note"><strong>この章だけファイルが2つです。</strong>Code.gsに1つ目を貼り、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って2つ目を貼ります。保護者に配るので、アクセスできるユーザーは「全員」です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>作りたいもの：保護者が自分のスマホで面談の予約をするWebアプリです。
+・「予約枠」シートに、日付・曜日・時間・予約（お子さんの名前）の列で枠を書いておきます。シートがなければ見本の枠ごと自動で作ってください
+・画面には、日付ごとに空いている枠をボタンで並べてください
+・埋まっている枠は「予約済み」とだけ表示して、予約した人の名前は絶対に画面に出さないでください
+・保護者が、お子さんの名前を入力して枠を押すと、確認してから予約が確定し、シートのその枠に名前が入ります
+・同じ枠に同時に2人が申し込んでも、先の1人だけが確定するようにしてください。あとの人には「その枠は、たったいま埋まりました」と伝えて、選び直してもらってください
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください。先生がシートに直接名前を書いたり消したりしても、画面の空き状況に正しく反映されるようにしてください
+・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（面談予約くん（Code.gs））</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 面談予約くん —— GAS本3（読者向け軽量版・Code.gs）
+ *
+ * 保護者面談の予約を、スマホの画面で受け付けます。
+ *   ・「予約枠」シートが本体。枠の追加・削除・名前の書き込みは、シートを直接触ってOK
+ *   ・シートは、なければ自動で作られます（開いたときにも直します）。準備は要りません
+ *   ・画面は空き枠だけを見せます。埋まった枠は「予約済み」とだけ出て、名前は見せません
+ *   ・同じ枠に同時に2人が申し込んでも、先の1人だけが確定します（早い者勝ちを壊さない）
+ *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。
+ * 【準備】ありません。▶実行（buildSample）で枠の見本ができます。
+ * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script
+ */
+
+// ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const APP_TITLE = '保護者面談 予約';   // ▼ 画面のいちばん上に出る見出し（学校名・学級名を入れても）
+const SHEET_NAME = '予約枠';           // ▼ 枠を書いておくシート名
+// -------------------------------------------------------------------------
+
+const HEADER = ['日付', '曜日', '時間', '予約（お子さんの名前）'];
+
+/** シートを開いたときにメニューを出して、壊れているシートを黙って直します。 */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('📅 面談予約')
+    .addItem('枠の見本をつくる', 'buildSample')
+    .addToUi();
+
+  getOrCreateSheet_(); // 誰かがタブを消しても、次に開いた瞬間に見出しつきで生き返ります
+}
+
+/** 枠の見本を作ります。▶実行を押すのはこの関数。すでに枠があるときは何もしません。 */
+function buildSample() {
+  const sheet = getOrCreateSheet_();
+  if (sheet.getLastRow() &gt; 1) {
+    SpreadsheetApp.getUi().alert('すでに枠があります。枠を作り直したいときは、行を選んで手で削除してください。');
+    return;
+  }
+
+  // 明日以降の平日3日分 × 6枠の見本を作ります
+  const times = ['15:00', '15:15', '15:30', '15:45', '16:00', '16:15'];
+  const rows = [];
+  let cursor = new Date();
+  let daysAdded = 0;
+  while (daysAdded &lt; 3) {
+    cursor = new Date(cursor.getTime() + 24 * 60 * 60 * 1000);
+    const weekday = weekdayOf_(cursor);
+    if (weekday === '土' || weekday === '日') continue;
+    times.forEach(function (time) {
+      rows.push([ymd_(cursor), weekday, time, '']);
+    });
+    daysAdded++;
+  }
+
+  sheet.getRange(2, 1, rows.length, HEADER.length).setValues(rows);
+  sheet.getRange(2, 1, rows.length, 3).setNumberFormat('@');
+  SpreadsheetApp.getActive().toast('見本の枠を ' + rows.length + ' 件つくりました。日付や時間は手で書き換えて構いません。', '完了', 8);
+}
+
+/** 予約ページ。デプロイしたURLが開かれると呼ばれます。 */
+function doGet() {
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  return template.evaluate()
+    .setTitle(APP_TITLE)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/**
+ * 画面から呼ばれて、いまの枠の一覧を返します。
+ * 埋まっている枠は「埋まっている」という事実だけを返し、名前は返しません。
+ */
+function getSlots() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  const lastRow = sheet ? sheet.getLastRow() : 0;
+  if (lastRow &lt; 2) return [];
+
+  const values = sheet.getRange(2, 1, lastRow - 1, HEADER.length).getValues();
+  return values
+    .map(function (row, i) {
+      return {
+        row: i + 2,
+        date: String(row[0]).trim(),
+        weekday: String(row[1]).trim(),
+        time: String(row[2]).trim(),
+        taken: String(row[3]).trim() !== ''
+      };
+    })
+    .filter(function (slot) { return slot.date &amp;&amp; slot.time; });
+}
+
+/**
+ * 画面から呼ばれて、予約を確定します。
+ * ロックをかけてから枠を読み直すので、同時に2人が押しても先の1人だけが入ります。
+ */
+function reserve(row, name) {
+  const childName = String(name || '').trim();
+  if (!childName) {
+    return { ok: false, message: 'お子さんの名前を入力してください。' };
+  }
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10 * 1000);
+  try {
+    const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+    const rowNumber = Number(row);
+    if (!sheet || !rowNumber || rowNumber &lt; 2 || rowNumber &gt; sheet.getLastRow()) {
+      return { ok: false, message: 'その枠が見つかりませんでした。ページを開き直してください。' };
+    }
+
+    const range = sheet.getRange(rowNumber, 1, 1, HEADER.length);
+    const slot = range.getValues()[0];
+    if (String(slot[3]).trim() !== '') {
+      return { ok: false, message: 'その枠は、たったいま埋まりました。ほかの枠を選んでください。' };
+    }
+
+    sheet.getRange(rowNumber, 4).setValue(childName);
+    return {
+      ok: true,
+      message: slot[0] + '（' + slot[1] + '）' + slot[2] + ' で予約しました。お待ちしています。'
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/** 「予約枠」シートを、なければ見出しつきで作ります。 */
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  ss.setSpreadsheetTimeZone('Asia/Tokyo');
+
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const header = sheet.getRange(1, 1, 1, HEADER.length);
+  if (String(header.getValues()[0][0]) !== HEADER[0]) {
+    header.setValues([HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 110);
+    sheet.setColumnWidth(2, 50);
+    sheet.setColumnWidth(3, 80);
+    sheet.setColumnWidth(4, 260);
+  }
+  return sheet;
+}
+
+/** 2026-09-07 の形の文字列にします。 */
+function ymd_(date) {
+  return Utilities.formatDate(date, 'Asia/Tokyo', 'yyyy-MM-dd');
+}
+
+/** 日本時間での曜日を1文字で返します。 */
+function weekdayOf_(date) {
+  const n = ymd_(date).split('-').map(Number);
+  const anchor = new Date(Date.UTC(n[0], n[1] - 1, n[2]));
+  return ['日', '月', '火', '水', '木', '金', '土'][anchor.getUTCDay()];
+}</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（面談予約くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 面談予約くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
+  header { background: #1a73e8; color: #fff; padding: 14px 16px; font-size: 20px; font-weight: bold; }
+  main { padding: 12px; max-width: 640px; margin: 0 auto; }
+  .name-box { background: #fff; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .name-box label { display: block; font-size: 14px; color: #5f6368; margin-bottom: 6px; }
+  .name-box input { width: 100%; box-sizing: border-box; font-size: 18px; padding: 10px; border: 1px solid #dadce0; border-radius: 8px; }
+  section { background: #fff; border-radius: 10px; padding: 4px 14px 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  h2 { font-size: 17px; border-bottom: 2px solid #1a73e8; padding-bottom: 6px; margin: 10px 0 8px; }
+  .slots { display: flex; flex-wrap: wrap; gap: 8px; }
+  button.slot { font-size: 17px; padding: 10px 14px; border-radius: 8px; border: 1px solid #1a73e8; background: #fff; color: #1a73e8; }
+  button.slot:active { background: #e8f0fe; }
+  span.taken { font-size: 17px; padding: 10px 14px; border-radius: 8px; background: #f1f3f4; color: #9aa0a6; }
+  #message { padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 16px; display: none; }
+  #message.ok { display: block; background: #e6f4ea; color: #137333; }
+  #message.ng { display: block; background: #fce8e6; color: #c5221f; }
+  .loading { text-align: center; color: #5f6368; padding: 24px 0; }
+&lt;/style&gt;
+
+&lt;header&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div id="message"&gt;&lt;/div&gt;
+
+  &lt;div class="name-box"&gt;
+    &lt;label for="childName"&gt;お子さんの名前（予約する枠を押す前に入力してください）&lt;/label&gt;
+    &lt;input type="text" id="childName" placeholder="例：戯画 太郎"&gt;
+  &lt;/div&gt;
+
+  &lt;div id="slots" class="loading"&gt;空き枠を読み込んでいます…&lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+  // 画面ができたら、まず空き枠を読み込みます
+  loadSlots();
+
+  function loadSlots() {
+    document.getElementById('slots').className = 'loading';
+    document.getElementById('slots').textContent = '空き枠を読み込んでいます…';
+    google.script.run
+      .withSuccessHandler(renderSlots)
+      .withFailureHandler(function (e) { showMessage(false, '読み込みに失敗しました。ページを開き直してください。'); })
+      .getSlots();
+  }
+
+  function renderSlots(slots) {
+    const box = document.getElementById('slots');
+    box.className = '';
+    box.textContent = '';
+
+    if (!slots || slots.length === 0) {
+      box.textContent = 'いまは予約できる枠がありません。';
+      return;
+    }
+
+    // 日付ごとにまとめて表示します
+    let currentDate = '';
+    let section = null;
+    let list = null;
+    slots.forEach(function (slot) {
+      if (slot.date !== currentDate) {
+        currentDate = slot.date;
+        section = document.createElement('section');
+        const h2 = document.createElement('h2');
+        h2.textContent = mdLabel(slot.date) + '（' + slot.weekday + '）';
+        list = document.createElement('div');
+        list.className = 'slots';
+        section.appendChild(h2);
+        section.appendChild(list);
+        box.appendChild(section);
+      }
+      if (slot.taken) {
+        const taken = document.createElement('span');
+        taken.className = 'taken';
+        taken.textContent = slot.time + ' 予約済み';
+        list.appendChild(taken);
+      } else {
+        const button = document.createElement('button');
+        button.className = 'slot';
+        button.textContent = slot.time;
+        button.onclick = function () { book(slot); };
+        list.appendChild(button);
+      }
+    });
+  }
+
+  function book(slot) {
+    const name = document.getElementById('childName').value.trim();
+    if (!name) {
+      showMessage(false, '先に、お子さんの名前を入力してください。');
+      return;
+    }
+    if (!confirm(mdLabel(slot.date) + '（' + slot.weekday + '）' + slot.time + ' を予約します。よろしいですか？')) return;
+
+    google.script.run
+      .withSuccessHandler(function (result) {
+        showMessage(result.ok, result.message);
+        loadSlots(); // 最新の空き状況に描き直します
+      })
+      .withFailureHandler(function (e) { showMessage(false, '予約に失敗しました。もう一度お試しください。'); })
+      .reserve(slot.row, name);
+  }
+
+  function showMessage(ok, text) {
+    const box = document.getElementById('message');
+    box.className = ok ? 'ok' : 'ng';
+    box.textContent = text;
+    window.scrollTo(0, 0);
+  }
+
+  function mdLabel(text) {
+    const m = String(text).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    return m ? Number(m[2]) + '月' + Number(m[3]) + '日' : String(text);
+  }
+&lt;/script&gt;</code></pre>
+    </div>
+  </div>
+</section>
+
+<footer class="page">
+  <p><strong>安全の線引き</strong>：児童生徒の個人情報・成績を、スクリプトにもAIへのプロンプトにも入れないでください。「全員」公開の画面には、学校の中の情報を映さないでください。本書のレシピは、画面に出すもの・出さないものを分ける「守り」の設計で作ってあります。</p>
+  <p><strong>本体はシート</strong>：この本の道具は、すべて「シートが本体、画面は皮」の形で作ってあります。画面が止まっても、シートを開けば業務は続けられます。</p>
+  <p>『コードを1文字も書かない校務自動化3』（前多昌顕）読者用ページ／<a href="../">1冊目のコード</a>／<a href="../2/">2冊目のコード</a></p>
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    const flash = (message, cls, ms) => {
+      if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+      btn.textContent = message;
+      btn.classList.remove('done', 'warn');
+      btn.classList.add(cls);
+      clearTimeout(btn._timer);
+      btn._timer = setTimeout(() => {
+        btn.textContent = btn.dataset.label;
+        btn.classList.remove('done', 'warn');
+      }, ms);
+    };
+
+    btn.addEventListener('click', () => {
+      const codeEl = btn.closest('.codewrap').querySelector('code');
+      const code = codeEl.innerText;
+
+      const legacyCopy = () => {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = code;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-1000px';
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return ok;
+        } catch (e) {
+          return false;
+        }
+      };
+
+      const onFailure = () => {
+        if (legacyCopy()) { flash('コピーしました', 'done', 1600); return; }
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(codeEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          flash('選択しました。Ctrl+C / \u2318+C を押してください', 'warn', 4000);
+        } catch (e) {
+          flash('コピーできません。コードを直接選んでください', 'warn', 4000);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(
+          () => flash('コピーしました', 'done', 1600),
+          onFailure
+        );
+      } else {
+        onFailure();
+      }
+    });
+  });
+</script>
+</body>
+</html>
