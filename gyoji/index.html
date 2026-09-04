@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行事反省まるごとくん｜行事の反省を、フォームごと自動で回す</title>
+<meta name="description" content="行事の反省フォームを自動で作り、締切を催促し、回答をGoogleドキュメントにまとめるところまで自動化するスプレッドシートです。コピーして使えます。">
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --panel: #ffffff;
+    --ink: #22242a;
+    --muted: #6b6f76;
+    --line: #e4e4e0;
+    --accent: #a3552a;
+    --accent-soft: #f6ece4;
+    --note-bg: #fff8e6;
+    --note-line: #e8d48a;
+    --note-ink: #6b5310;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181d;
+      --panel: #1e2127;
+      --ink: #e7e8ea;
+      --muted: #9aa0a8;
+      --line: #313640;
+      --accent: #e0a06b;
+      --accent-soft: #2b241d;
+      --note-bg: #2a2617;
+      --note-line: #5c5024;
+      --note-ink: #e0cf90;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+  header.page { border-bottom: 2px solid var(--accent); padding-bottom: 20px; margin-bottom: 8px; }
+  header.page h1 { font-size: 1.6rem; margin: 0 0 6px; letter-spacing: .01em; }
+  header.page .sub { color: var(--muted); font-size: .95rem; margin: 0; }
+
+  .lead { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 24px 0 28px; font-size: .95rem; }
+  .lead p { margin: 0 0 10px; }
+  .lead p:last-child { margin-bottom: 0; }
+
+  .cta { background: var(--accent-soft); border-radius: 12px; padding: 22px 20px; margin: 0 0 40px; text-align: center; }
+  .cta a.btn {
+    display: inline-block; background: var(--accent); color: #fff; text-decoration: none;
+    border-radius: 8px; padding: 14px 28px; font-size: 1.05rem; font-weight: 600;
+    transition: filter .15s, transform .1s;
+  }
+  .cta a.btn:hover { filter: brightness(1.08); }
+  .cta a.btn:active { transform: scale(.98); }
+  .cta .url { display: block; margin-top: 12px; color: var(--muted); font-size: .85rem; font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .cta .after { margin: 14px 0 0; font-size: .88rem; color: var(--muted); }
+
+  nav.toc { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin-bottom: 40px; font-size: .92rem; }
+  nav.toc strong { display: block; margin-bottom: 8px; color: var(--accent); }
+  nav.toc ul { list-style: none; margin: 2px 0 0; padding-left: 4px; }
+  nav.toc a { color: var(--ink); text-decoration: none; display: inline-block; padding: 2px 0; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  section.block { margin-bottom: 48px; }
+  section.block > h2 { font-size: 1.25rem; border-left: 5px solid var(--accent); padding-left: 12px; margin: 0 0 14px; }
+  section.block > h3 { font-size: 1rem; margin: 28px 0 8px; }
+  p { margin: 0 0 14px; }
+
+  .flow { list-style: none; margin: 0; padding: 0; }
+  .flow li { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; }
+  .flow li b { display: block; color: var(--accent); font-size: .95rem; margin-bottom: 2px; }
+  .flow li span { font-size: .92rem; color: var(--muted); }
+
+  ol.steps { margin: 0; padding-left: 1.4em; }
+  ol.steps li { margin: 10px 0; }
+  ol.steps li b { color: var(--ink); }
+
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 0 0 14px; display: block; overflow-x: auto; white-space: nowrap; }
+  table thead th { background: var(--accent-soft); color: var(--ink); text-align: left; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+  td.req { color: var(--accent); font-weight: 600; }
+
+  .note { background: var(--note-bg); border: 1px solid var(--note-line); color: var(--note-ink); border-radius: 8px; padding: 12px 16px; font-size: .88rem; margin: 0 0 16px; }
+  .note b { color: inherit; }
+  code { background: rgba(128,128,128,.16); padding: 1px 6px; border-radius: 4px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .88em; }
+
+  .qa { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+  .qa:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .qa .q { font-weight: 600; margin: 0 0 6px; }
+  .qa .a { margin: 0; font-size: .93rem; color: var(--muted); }
+
+  footer.page { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+  footer.page a { color: var(--accent); }
+  footer.page ul { padding-left: 1.2em; margin: 8px 0 0; }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 24px 14px 60px; }
+    header.page h1 { font-size: 1.3rem; }
+    .cta a.btn { display: block; padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <h1>行事反省まるごとくん</h1>
+  <p class="sub">行事の反省を、フォーム作りから集約まで自動で回すスプレッドシート</p>
+</header>
+
+<div class="lead">
+  <p>運動会が終わる。反省フォームを作る。締切前にもう一度お願いして回る。集まった回答をコピーして、来年の担当が読める形に整える。——この一連を、行事の名前と日付を入れるだけにしました。</p>
+  <p>行事名・実施日・締切日を書いておけば、実施日の1週間前にフォームが自動でできて、締切の3日前と当日にGoogle Chatへ催促が飛び、回答は年度のGoogleドキュメントに「1行事1タブ」でまとまります。グラフも自由記述も入った状態で、そのまま印刷して会議に出せます。</p>
+</div>
+
+<div class="cta">
+  <a class="btn" href="https://bit.ly/gyojimarugoto">使ってみる（自分のドライブにコピー）</a>
+  <span class="url">https://bit.ly/gyojimarugoto</span>
+  <p class="after">開くとプレビュー画面が出ます。［テンプレートを使用］を押すと、あなたのドライブにコピーが作られます。仕組み（スクリプト）も一緒に付いてきます。</p>
+</div>
+
+<nav class="toc">
+  <strong>このページの中身</strong>
+  <ul>
+    <li><a href="#what">1. 何が自動になるのか</a></li>
+    <li><a href="#start">2. 使い始めるまでの6手順</a></li>
+    <li><a href="#questions">3. 聞きたいことは自由に変えられます</a></li>
+    <li><a href="#settings">4. 設定セル（管理者用シートのI列）</a></li>
+    <li><a href="#doc">5. 反省ドキュメントの中身</a></li>
+    <li><a href="#qa">6. よくあるつまずき</a></li>
+  </ul>
+</nav>
+
+<section class="block" id="what">
+  <h2>1. 何が自動になるのか</h2>
+  <p>管理者用シートのA〜C列に、行事名・実施日・締切日を書いておくだけです。あとは順番に起きます。</p>
+  <ul class="flow">
+    <li><b>① フォームが自動でできる</b><span>実施日の7日前になった行事のフォームを、原本をコピーして作ります。回答の集計先も、保存フォルダも、自動でつながります。手で作るなら、行を選んで［選択した行のフォームを作成］でも作れます。</span></li>
+    <li><b>② 締切前に催促が飛ぶ</b><span>締切の3日前と当日に、Google Chatへ「まだの方はお願いします」を投げます。3日前が土日なら金曜に前倒しします。Chatを使っていない学校なら、この機能は空欄にして切っておけます。</span></li>
+    <li><b>③ 回答がドキュメントにまとまる</b><span>5段階の質問はグラフに、自由記述は箇条書きに。年度のGoogleドキュメントに、行事ごとのタブが1枚ずつ増えていきます。</span></li>
+    <li><b>④ 「対応」は人が書く</b><span>タブの下に「■ 対応」の欄があります。ここは自動では触りません。集約をやり直しても、書いた文章は残ります。</span></li>
+    <li><b>⑤ 年度末に、まるごと切り替わる</b><span>新年度のドキュメント・集計先シート・保存フォルダを作って、参照を張り替えます。去年の分はそのまま残ります。</span></li>
+  </ul>
+  <div class="note">
+    <b>「1行事1タブ」にしたのは、印刷して配ることが多いからです。</b>スライド1枚にまとめると一望できますが、自由記述が多い年に文字が潰れます。ドキュメントなら下に伸びるので、何件来ても切れません。左のタブ一覧が、そのまま年度の目次になります。
+  </div>
+</section>
+
+<section class="block" id="start">
+  <h2>2. 使い始めるまでの6手順</h2>
+  <ol class="steps">
+    <li><b>コピーする。</b>上のボタン（<code>bit.ly/gyojimarugoto</code>）を開いて［テンプレートを使用］。自分のドライブにコピーができます。</li>
+    <li><b>メニュー［行事反省］→［① 初期セットアップ（最初に1回）］。</b>途中で「使う4点を自動で作りますか？」と聞かれるので［はい］。原本フォーム・回答の集計先シート・フォームの保存フォルダ・反省ドキュメントの4つが、同じ場所にできたフォルダの中に生まれます。</li>
+    <li><b>初回だけ承認の画面が出ます。</b>「このアプリはGoogleで確認されていません」と言われますが、あなたがコピーしたスクリプトに、あなたが許可を出す画面です。［詳細］→［（安全ではないページ）に移動］で進めます。</li>
+    <li><b>できた原本フォームを開いて、聞きたい項目に直す。</b>ふつうのGoogleフォームの編集画面です。質問を足しても消しても構いません（→<a href="#questions">3</a>）。</li>
+    <li><b>［② 設定を確認］を押す。</b>設定が足りているか、質問がどう扱われるかを、日本語で一覧にして見せます。ここが全部そろっていれば動きます。</li>
+    <li><b>A〜C列に行事を書いて、［自動運転をまとめて設定］を1回実行。</b>これで①〜⑤が勝手に回りはじめます。</li>
+  </ol>
+  <div class="note">
+    <b>いきなり本番の行事で試さなくて大丈夫です。</b>実施日を明日あたりにした行事を1行だけ書いて、［選択した行のフォームを作成］→ 自分で回答 →［選択した行を集約（やり直しもこちら）］まで通してみてください。ひととおり見たら、［初期化（テストデータを消して配れる状態に）］でテストの痕跡をまとめて消せます（ファイル4点はゴミ箱に入れるかどうかを別に聞きます）。
+  </div>
+</section>
+
+<section class="block" id="questions">
+  <h2>3. 聞きたいことは自由に変えられます</h2>
+  <p>質問設計のシートのようなものはありません。<strong>原本フォームを、ふつうのGoogleフォームの編集画面で直すだけ</strong>です。仕組みの側は、質問の「種類」だけを見て扱いを決めます。</p>
+  <table>
+    <thead><tr><th>質問の種類</th><th>反省ドキュメントでの扱い</th></tr></thead>
+    <tbody>
+      <tr><td>均等目盛（1〜5など）・評価（星）</td><td>グラフになります（タイトルに平均値つき）</td></tr>
+      <tr><td>記述式（短文・段落）</td><td>「■ 記事」に箇条書き。複数あれば【質問名】で区切ります</td></tr>
+      <tr><td>ラジオボタン・プルダウン・チェックボックス</td><td>ふだんは載せません。設定I6を「はい」にするとグラフになります</td></tr>
+      <tr><td>見出し・区切り・画像・動画</td><td>素通りします</td></tr>
+      <tr><td>日付・時刻・グリッド・ファイル</td><td>集計しません（回答は集計先シートに残ります）</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    質問を直しても、<b>すでに配ったフォームは変わりません</b>。次に作られるフォームから反映されます。編集場所を二重にしないための割り切りです。
+  </div>
+  <p>最初から入っている原本は2ページ構成です。1ページ目の「参加しましたか」で「参加していない」を選ぶと、そのまま送信になります。参加していない人が、5段階評価に無理やり答えさせられません。</p>
+</section>
+
+<section class="block" id="settings">
+  <h2>4. 設定セル（管理者用シートのI列）</h2>
+  <p>H列が見出しで、その右のI列に値を入れます。［① 初期セットアップ］で4点を自動作成した場合、<strong>I1〜I4は自動で埋まります</strong>。</p>
+  <table>
+    <thead><tr><th>セル</th><th>見出し</th><th>入れるもの</th></tr></thead>
+    <tbody>
+      <tr><td class="req">I1</td><td>フォームの原本</td><td>コピー元にするGoogleフォームのURL（必須）</td></tr>
+      <tr><td class="req">I2</td><td>集計先シート</td><td>回答をためるスプレッドシートのURL（必須）</td></tr>
+      <tr><td class="req">I3</td><td>フォームの保存場所</td><td>作られたフォームを入れるフォルダのURL（必須）</td></tr>
+      <tr><td class="req">I4</td><td>反省ドキュメント</td><td>反省をためるGoogleドキュメントのURL（必須）</td></tr>
+      <tr><td>I5</td><td>Chat通知</td><td>Google ChatのWebhook URL。<b>空欄なら通知せずに動きます</b></td></tr>
+      <tr><td>I6</td><td>選択式もグラフにする</td><td>はい／いいえ（既定：いいえ）</td></tr>
+      <tr><td>I7</td><td>メールアドレスを確認済みで収集</td><td>はい／いいえ（既定：はい）</td></tr>
+      <tr><td>I8</td><td>回答を1人1回に制限</td><td>はい／いいえ（既定：はい）</td></tr>
+      <tr><td>I9</td><td>送信後に「別の回答を送信」を表示</td><td>はい／いいえ（既定：いいえ）</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    I7・I8を「はい」にすると、<b>回答する先生はGoogleへのログインが必要になります</b>。校内の職員に配るなら、そのままで構いません。外部の方にも答えてもらう行事なら、両方「いいえ」にしてください。
+  </div>
+</section>
+
+<section class="block" id="doc">
+  <h2>5. 反省ドキュメントの中身</h2>
+  <p>行事ごとのタブは、こういう並びです。</p>
+  <table>
+    <thead><tr><th>場所</th><th>中身</th><th>集約をやり直したら</th></tr></thead>
+    <tbody>
+      <tr><td>行事名（見出し1）</td><td>フォームを作ったときに入ります</td><td>そのまま</td></tr>
+      <tr><td>■ グラフ</td><td>5段階の質問を棒グラフで。平均値つき</td><td>書き直されます</td></tr>
+      <tr><td>■ 記事</td><td>自由記述を箇条書きで全件</td><td>書き直されます</td></tr>
+      <tr><td>■ 対応</td><td><b>担当者が手で書く欄</b></td><td><b>消えません</b></td></tr>
+    </tbody>
+  </table>
+  <p>締切のあとに回答が増えても、もう一度集約すれば最新の状態に書き直されます。「対応」に書いた来年への申し送りは、その下で無事です。</p>
+</section>
+
+<section class="block" id="qa">
+  <h2>6. よくあるつまずき</h2>
+
+  <div class="qa">
+    <p class="q">Google Chatを使っていません。</p>
+    <p class="a">I5を空欄のままにしてください。締切通知だけ働かず、あとは全部動きます。エラーにもなりません。</p>
+  </div>
+
+  <div class="qa">
+    <p class="q">学校のアカウントではなく、個人の@gmail.comで試したい。</p>
+    <p class="a">動きます。組織内共有の設定だけは効かないので、その部分は飛ばしてフォルダの共有設定を引き継ぎます。</p>
+  </div>
+
+  <div class="qa">
+    <p class="q">「① 初期セットアップ」をもう一度押したら、設定が消えませんか。</p>
+    <p class="a">すでに値が入っているセルは上書きしません。作り直したいセルだけ空にしてから［使うファイル4点を自動で作る］を実行してください。</p>
+  </div>
+
+  <div class="qa">
+    <p class="q">「■ 対応」の見出しを消してしまいました。</p>
+    <p class="a">次の集約のときに、タブの末尾へ作り直します。書いてあった文章は戻りませんので、消さずに残してください。</p>
+  </div>
+
+  <div class="qa">
+    <p class="q">フォームがいつまでも自動で作られません。</p>
+    <p class="a">［自動運転をまとめて設定］を1回実行したか確かめてください。自動作成は<b>実施日の7日前</b>に走ります。それより先の行事は、まだ順番が来ていないだけです。急ぐときは行を選んで［選択した行のフォームを作成］。</p>
+  </div>
+
+  <div class="qa">
+    <p class="q">コピーしたら、スクリプトも付いてきますか。</p>
+    <p class="a">付いてきます。スプレッドシートに紐づいた仕組みなので、公開作業（デプロイ）も要りません。メニュー［行事反省］が出ていれば、それが動いている印です。</p>
+  </div>
+</section>
+
+<footer class="page">
+  <p>作った人：前多昌顕（青森県五所川原市立五所川原小学校 教務主任／Google認定トレーナー）</p>
+  <ul>
+    <li>YouTube「前多先生のICT教室」 <a href="https://www.youtube.com/@maetaict">https://www.youtube.com/@maetaict</a></li>
+    <li>『コードを1文字も書かない校務自動化2 学校の裏方編』のコード＆発注文一覧 <a href="../2/">/gas/2/</a></li>
+  </ul>
+  <p>このツールは、うまくいかなくても責任を取れません。大事なデータのあるファイルでいきなり試さず、コピーしたシートで一度通してから使ってください。</p>
+</footer>
+
+</div>
+</body>
+</html>
