@@ -84,6 +84,10 @@
   .recipe { margin-top: 24px; }
   .recipe h3 { font-size: 1.05rem; margin: 0 0 4px; }
   .recipe .what { color: var(--muted); font-size: .93rem; margin: 0 0 12px; }
+  section.chapter:target > h2 { background: #fff8e6; border-left-color: #c9a227; }
+  .from3 { background: var(--accent-soft); border: 2px solid var(--accent); border-radius: 12px; padding: 14px 20px; margin: 24px 0 0; font-size: .93rem; }
+  .from3 strong { color: var(--accent); }
+  .from3 a { color: var(--accent); }
   .note {
     background: var(--note-bg);
     border: 1px solid var(--note-line);
@@ -152,6 +156,10 @@
   <h1>コードを1文字も書かない校務自動化2 学校の裏方編｜コード＆発注文一覧</h1>
   <p class="sub">『コードを1文字も書かない校務自動化2　学校の裏方編』の読者用ページです。本書の発注文と、実際に動くコードを、まとめてコピーできます。</p>
 </header>
+
+<div class="from3">
+  <strong>『校務自動化3（Webアプリ編）』から来た人へ</strong>：3冊目の発注文に出てくる「このコード」は、このページの<strong>動くコード</strong>です。使うのは <a href="#c1">第1章 週予定書き出し.gs</a>（→3冊目第1章）／<a href="#c5">第5章 年間予定シートくん.gs</a>（→3冊目第5章）／<a href="#c6">第6章 進行表タイマー.gs</a>（→3冊目第3章）／<a href="#c7">第7章 提出チェックくん.gs</a>（→3冊目第4章）の4つ。コピーして自分のチャットAIに貼ったら、<a href="../3/">3冊目のページ</a>に戻って発注文を続けて送ってください。
+</div>
 
 <div class="lead">
   <h2>使い方</h2>
@@ -2165,7 +2173,7 @@ function removeReminder_() {
 <footer class="page">
   <p><strong>安全の線引き</strong>：児童生徒の個人情報・成績を、スクリプトにもAIへのプロンプトにも入れないでください。本書のレシピは、自分の業務効率化の範囲で、学校・自治体のルールの中で使うことが前提です。カレンダーIDなど学校に属する情報は、コードの器だけAIに作らせて、中身は自分の手で貼るのが本書の流儀です。</p>
   <p><strong>合鍵の置き場所</strong>：WebhookのURLのような「知っている人なら誰でも使えてしまう値」は、コードに直接書かず、スクリプトプロパティ（金庫）に入れてください。コードは見せるもの、鍵はしまうものです。</p>
-  <p>『コードを1文字も書かない校務自動化2　学校の裏方編』（前多昌顕）読者用ページ／1冊目のコードは <a href="../">こちら</a></p>
+  <p>『コードを1文字も書かない校務自動化2　学校の裏方編』（前多昌顕）読者用ページ／1冊目のコードは <a href="../">こちら</a>／3冊目（Webアプリ編）のコードは <a href="../3/">こちら</a></p>
   <p><strong>本書を読む：</strong><a href="https://www.amazon.co.jp/dp/B0HHQHZSH5">『コードを1文字も書かない校務自動化2 学校の裏方編』をAmazonで見る</a></p>
   <p>AIにGASコードを書かせ、先生の日々の仕事を自動化する入門編（第1巻）は<a href="https://johnnymaeta.github.io/gas/">こちら</a>。</p>
 </footer>

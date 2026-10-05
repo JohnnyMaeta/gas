@@ -76,6 +76,20 @@
   pre code { font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace; white-space: pre; }
   .codewrap.order pre { background: #263043; max-height: none; }
   .codewrap.order .codebar { background: #263043; }
+  .start { background: var(--accent-soft); border: 2px solid var(--accent); border-radius: 12px; padding: 18px 20px; margin: 24px 0 0; font-size: .95rem; }
+  .start h2 { font-size: 1.05rem; margin: 0 0 8px; color: var(--accent); }
+  .start p { margin: 6px 0; }
+  .start table { width: 100%; border-collapse: collapse; margin: 10px 0 4px; font-size: .9rem; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  .start th, .start td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .start th { background: rgba(0,0,0,.04); font-weight: 600; white-space: nowrap; }
+  .start tr:last-child td { border-bottom: none; }
+  .start a.btn, .base a.btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; border-radius: 6px; padding: 3px 10px; font-size: .82rem; white-space: nowrap; }
+  .start a.btn:hover, .base a.btn:hover { filter: brightness(1.08); }
+  .start a.in { color: var(--accent); }
+  .base { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: .88rem; margin: 0 0 12px; }
+  .base strong { color: var(--accent); }
+  .base .alt { display: block; margin-top: 6px; color: var(--muted); }
+  section.chapter:target > h2 { background: var(--note-bg); border-left-color: #c9a227; }
   footer.page { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
   @media (max-width: 600px) {
     .wrap { padding: 24px 14px 60px; }
@@ -92,14 +106,33 @@
   <p class="sub">『コードを1文字も書かない校務自動化3（Webアプリ編・近刊）』の読者用ページです。本書の発注文と、実際に動くコードを、まとめてコピーできます。1・2冊目の道具に、スマホや大画面で開ける「画面」をつけます。</p>
 </header>
 
+<!-- ============ この本から読む人へ ============ -->
+<div class="start" id="start">
+  <h2>この本から読む人へ——前の2冊のコードは、ここから貼れます</h2>
+  <p>この本の発注文の多くは「<strong>このコードに、続けて機能を足してください</strong>」で始まります。その「このコード」が、前の2冊で作った道具です。<strong>本を持っていなくても、完成品を公開してあります。</strong>下の表のリンクで、その章のコードが置いてある場所に直接飛べます。</p>
+  <table>
+    <thead><tr><th>この本の章</th><th>ベースのコード（前の本）</th><th></th></tr></thead>
+    <tbody>
+      <tr><td><a class="in" href="#c1">第1章 週予定を、スマホで開く</a></td><td>2冊目 第1章「動くコード（週予定書き出し.gs）」</td><td><a class="btn" href="../2/#c1">開く →</a></td></tr>
+      <tr><td><a class="in" href="#c3">第3章 進行表を、体育館の大画面に</a></td><td>2冊目 第6章「動くコード（進行表タイマー.gs）」</td><td><a class="btn" href="../2/#c6">開く →</a></td></tr>
+      <tr><td><a class="in" href="#c4">第4章 提出状況を、ボードにする</a></td><td>2冊目 第7章「動くコード（提出チェックくん.gs）」</td><td><a class="btn" href="../2/#c7">開く →</a></td></tr>
+      <tr><td><a class="in" href="#c5">第5章 「今日の学校」ページ</a></td><td>2冊目 第5章「動くコード（年間予定シートくん.gs）」</td><td><a class="btn" href="../2/#c5">開く →</a></td></tr>
+      <tr><td><a class="in" href="#c6">第6章 教室に、ボタンを置く</a></td><td>なし（新しく作らせます。元ネタは1冊目 第7章「そうだんボタン」）</td><td><a class="btn" href="../#c7">参考 →</a></td></tr>
+      <tr><td><a class="in" href="#c7">第7章 予約を、受け付ける</a></td><td>なし（新しく作らせます）</td><td></td></tr>
+    </tbody>
+  </table>
+  <p><strong>入口は2つ。</strong>①ベースのコードを自分のAIに貼ってから、この本の発注文を「続けて」送る（本の読み方どおり）。②急ぐ人は、このページ各章の「動くコード」をそのまま貼る（ベースの機能ごと入っているので、前の本のコードは要りません）。どちらから入っても、行き先は同じです。</p>
+  <p>前の2冊のページ全体を見たい人は：<a class="in" href="../">1冊目のコード</a>／<a class="in" href="../2/">2冊目のコード</a></p>
+</div>
+
 <div class="lead">
   <h2>使い方</h2>
   <ol>
-    <li>基本は<strong>「発注文」をコピーして、自分のチャットAI（ChatGPT / Gemini のWeb版）に貼る</strong>のがこの本の流儀です。2冊目のコードに「続けて」頼む章は、いま手元で動いているコードをチャットに貼ってから、発注文を送ってください。</li>
+    <li>基本は<strong>「発注文」をコピーして、自分のチャットAI（ChatGPT / Gemini のWeb版）に貼る</strong>のがこの本の流儀です。2冊目のコードに「続けて」頼む章は、いま手元で動いているコードをチャットに貼ってから、発注文を送ってください。<strong>手元にない人は、各章の青い枠「ベースのコード」のリンクから、前の本のページでコピーできます</strong>（まとめた表は<a href="#start">いちばん上</a>）。</li>
     <li>急ぐ人は「動くコード」をそのままコピーしても構いません。<strong>ここに載っているのは全部、発注文からAIに作らせて、実際に動かして確かめたものです。</strong>2冊目のコードが手元になくても、ここの完成品はベースの機能ごと入っています。</li>
     <li><strong>準備は要りません。</strong>必要なシートは、最初の1回の実行でコードが自分で作ります。第1章は練習用カレンダー入りで、書き換える場所はありません。</li>
     <li>画面を開けるようにする手続きが<strong>「デプロイの儀式」</strong>です（下の黄色い枠）。この本で新しく覚える操作は、実はこれだけです。</li>
-    <li><strong>第7章だけ、ファイルが2つです。</strong>エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。</li>
+    <li><strong>第7章だけ、ファイルが2つです。</strong>エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。ほかの章で、あなたのAIが2ファイルに分けて返してきたときも、同じ操作で動きます（名前はAIが指定したとおり、大文字小文字まで同じに）。</li>
     <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。画面が開けないと言われたら、まず<strong>シークレットウィンドウ</strong>で開いてもらいます（マルチアカウントの切り分け）。</li>
   </ol>
 </div>
@@ -107,6 +140,7 @@
 <nav class="toc">
   <strong>目次</strong>
   <ul>
+    <li><a href="#start">この本から読む人へ（前の2冊のコードの場所）</a></li>
     <li><a href="#template">いつもの前置き（発注テンプレ）</a></li>
     <li><a href="#deploy">デプロイの儀式（チェックリスト）</a></li>
     <li><a href="#c1">第1章 週予定を、スマホで開く</a></li>
@@ -182,16 +216,18 @@
   <div class="recipe">
     <p class="what">2冊目第1章の週予定書き出しに、スマホで見られる画面をつけたものです。1階（カレンダー→シート）は2冊目と同じ、2階（画面）が今回の追加です。</p>
     <div class="note">練習用カレンダーのIDが貼り付け済みなので、<strong>書き換える場所はありません。</strong>①▶実行（main）でシートに書き出す ②デプロイの儀式（下の黄色い枠）でURLを発行、の2段階です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第1章の<strong>「動くコード（週予定書き出し.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c1">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（週予定書き出し.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
 
     <div class="codewrap order">
-      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>このコード（週予定をシートに書き出すGAS）に、続けて機能を足してください。
 ・スマホで見られるWebアプリの画面を追加してください
 ・画面には「週予定」シートの中身を、日付ごとにまとめて表示してください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
 ・画面は、開くたびにシートの最新の中身を読み込んでください
 ・文字は大きめにして、スマホで読みやすくしてください
-・画面のいちばん上の見出しは、コードの最初で書き換えられるようにしてください</code></pre>
+・画面のいちばん上の見出しは、コードの最初で書き換えられるようにしてください
+・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
     </div>
 
     <div class="codewrap">
@@ -442,9 +478,10 @@ function esc_(text) {
   <div class="recipe">
     <p class="what">2冊目第6章の進行表タイマーに、体育館の大画面用の画面をつけたものです。いまの種目と残り時間が特大で映り、20秒ごとに勝手に更新されます。当日、誰も画面を触りません。</p>
     <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。体育館のテレビに映すだけなら、アクセスできるユーザーは「自分のみ」でも構いません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第6章の<strong>「動くコード（進行表タイマー.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c6">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（進行表タイマー.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
 
     <div class="codewrap order">
-      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>このコード（行事の進行表タイマー）に、続けて機能を足してください。
 ・体育館の大画面に映すためのWebアプリの画面を追加してください
 ・画面には、いま進んでいる種目を特大の文字で、残り時間を「あと◯分」の形で表示してください
@@ -453,7 +490,8 @@ function esc_(text) {
 ・画面は20秒ごとに自動で最新の状態に更新してください。人が操作しなくても動き続けるようにしてください
 ・背景は黒、文字は白と黄色の、遠くから見やすい配色にしてください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
-・画面の見出しは、コードの最初で行事名に書き換えられるようにしてください</code></pre>
+・画面の見出しは、コードの最初で行事名に書き換えられるようにしてください
+・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
     </div>
 
     <div class="codewrap">
@@ -873,16 +911,18 @@ function nowMinutes_() {
   <div class="recipe">
     <p class="what">2冊目第7章の提出チェックくんに、集計だけが映るボードをつけたものです。誰が未提出かは画面に出ません。名簿はシートの中だけ＝画面の守りです。</p>
     <div class="note">職員室向けなので、アクセスできるユーザーは<strong>「（学校名）内の全員」</strong>が基本です。シートそのものは、これまでどおり誰にも共有しません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第7章の<strong>「動くコード（提出チェックくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c7">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（提出チェックくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
 
     <div class="codewrap order">
-      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>このコード（提出チェック表）に、続けて機能を足してください。
 ・提出状況を映すWebアプリの画面を追加してください
 ・画面に出すのは、提出物の名前・締切日・提出済みの人数と全体の人数・進み具合の棒グラフだけにしてください
 ・誰が提出していないかの名前の一覧は、画面には絶対に出さないでください
 ・全員が提出済みになったら、「全員そろいました」と表示してください
 ・画面は1分ごとに自動で最新の状態に更新してください
-・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください</code></pre>
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
     </div>
 
     <div class="codewrap">
@@ -1299,16 +1339,18 @@ function removeReminder_() {
   <div class="recipe">
     <p class="what">2冊目第5章の年間予定シートくんに、「今日の学校」ページをつけたものです。今日の行事・給食と、この先1週間の行事が1枚で見られます。新しいシートは作りません。</p>
     <div class="note">シートがまだ空なら、メニューの「1年分の日付をつくる」から（2冊目と同じ手順）。行事をシートに書き足せば、ページも次に開いたときから変わります。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第5章の<strong>「動くコード（年間予定シートくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c5">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（年間予定シートくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
 
     <div class="codewrap order">
-      <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>このコード（年間予定シートを作るGAS）に、続けて機能を足してください。
 ・「今日の学校」というWebアプリの画面を追加してください
 ・画面には、今日の日付・出校日かどうか・給食のありなし・今日の行事と備考を表示してください
 ・その下に、明日から1週間分の行事がある日だけを一覧で表示してください
 ・年間予定シートに行事や備考を書き足したら、画面にもそのまま反映されるようにしてください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
-・スマホで見やすい大きさにしてください</code></pre>
+・スマホで見やすい大きさにしてください
+・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
     </div>
 
     <div class="codewrap">
@@ -1664,6 +1706,7 @@ function fetchHolidays_(year) {
   <div class="recipe">
     <p class="what">子どもが出席番号を選んでボタンを押すと、あなたにメールが届き、ログのシートに1行残ります。画面に名前は出しません。1冊目最終章「そうだんボタン」の、この本の形での作り直しです。</p>
     <div class="note">通知の宛先は、実行したあなたのアドレスに自動でなります（▼ゼロ）。教室に置く前に、管理職への一言を（1冊目からの作法）。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="base"><strong>ベースのコードはありません。</strong>この章は新しく作らせるので、前の本のコードを貼る必要はありません。元になった1冊目第7章「そうだんボタン」を見たい人だけ：<a class="btn" href="../#c7">1冊目のページで開く →</a></div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
@@ -1820,6 +1863,7 @@ function esc_(text) {
   <div class="recipe">
     <p class="what">保護者がスマホで面談を予約するWebアプリです。空き枠だけがボタンで並び、埋まった枠は「予約済み」とだけ出ます。同じ枠に同時に2人が申し込んでも、先の1人だけが確定します。</p>
     <div class="note"><strong>この章だけファイルが2つです。</strong>Code.gsに1つ目を貼り、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って2つ目を貼ります。保護者に配るので、アクセスできるユーザーは「全員」です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <div class="base"><strong>ベースのコードはありません。</strong>この章は新しく作らせます。前置き→発注文の順に送るか、下の「動くコード」を2つとも貼ってください。</div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（前置きに続けて）</span><button class="copy-btn">コピー</button></div>
@@ -2120,7 +2164,7 @@ function weekdayOf_(date) {
 <footer class="page">
   <p><strong>安全の線引き</strong>：児童生徒の個人情報・成績を、スクリプトにもAIへのプロンプトにも入れないでください。「全員」公開の画面には、学校の中の情報を映さないでください。本書のレシピは、画面に出すもの・出さないものを分ける「守り」の設計で作ってあります。</p>
   <p><strong>本体はシート</strong>：この本の道具は、すべて「シートが本体、画面は皮」の形で作ってあります。画面が止まっても、シートを開けば業務は続けられます。</p>
-  <p>『コードを1文字も書かない校務自動化3』（前多昌顕）読者用ページ／<a href="../">1冊目のコード</a>／<a href="../2/">2冊目のコード</a></p>
+  <p>『コードを1文字も書かない校務自動化3』（前多昌顕）読者用ページ／<a href="../">1冊目のコード</a>／<a href="../2/">2冊目のコード</a>／<a href="#start">前の本のコードの場所（章別）</a></p>
 </footer>
 
 </div>
