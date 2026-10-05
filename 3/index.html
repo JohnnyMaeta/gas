@@ -132,7 +132,7 @@
     <li>急ぐ人は「動くコード」をそのままコピーしても構いません。<strong>ここに載っているのは全部、発注文からAIに作らせて、実際に動かして確かめたものです。</strong>2冊目のコードが手元になくても、ここの完成品はベースの機能ごと入っています。</li>
     <li><strong>準備は要りません。</strong>必要なシートは、最初の1回の実行でコードが自分で作ります。第1章は練習用カレンダー入りで、書き換える場所はありません。</li>
     <li>画面を開けるようにする手続きが<strong>「デプロイの儀式」</strong>です（下の黄色い枠）。この本で新しく覚える操作は、実はこれだけです。</li>
-    <li><strong>第7章だけ、ファイルが2つです。</strong>エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。ほかの章で、あなたのAIが2ファイルに分けて返してきたときも、同じ操作で動きます（名前はAIが指定したとおり、大文字小文字まで同じに）。</li>
+    <li><strong>第2章から、ファイルは2つです</strong>（中身の Code.gs と、見た目の index.html）。エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。名前はAIが指定したとおり、大文字小文字まで同じに。第1章だけは1ファイルです。</li>
     <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。画面が開けないと言われたら、まず<strong>シークレットウィンドウ</strong>で開いてもらいます（マルチアカウントの切り分け）。</li>
   </ol>
 </div>
@@ -162,7 +162,7 @@
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注テンプレ（全レシピ共通）</span><button class="copy-btn">コピー</button></div>
       <pre><code>私はプログラミング未経験の教員です。Google Apps Scriptのコードを書いてください。
-条件：(1) コードは1つにまとめる（この本の第7章だけは、中身と見た目の2ファイル） (2) 私が書き換える場所には日本語のコメントで「▼」を付ける
+条件：(1) コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分ける（この本の第1章だけは1ファイル） (2) 私が書き換える場所には日本語のコメントで「▼」を付ける
 (3) シート名の間違いなど、ありがちなミスは日本語のエラーメッセージで教えてくれる仕組みを入れる。
 まず、何をするコードか1行で説明してから、コードを見せてください。</code></pre>
     </div>
@@ -216,7 +216,7 @@
   <div class="recipe">
     <p class="what">2冊目第1章の週予定書き出しに、スマホで見られる画面をつけたものです。1階（カレンダー→シート）は2冊目と同じ、2階（画面）が今回の追加です。</p>
     <div class="note">練習用カレンダーのIDが貼り付け済みなので、<strong>書き換える場所はありません。</strong>①▶実行（main）でシートに書き出す ②デプロイの儀式（下の黄色い枠）でURLを発行、の2段階です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
-    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第1章の<strong>「動くコード（週予定書き出し.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c1">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（週予定書き出し.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第1章の<strong>「動くコード（週予定書き出し.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c1">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（週予定書き出し.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>この章だけ1ファイルです。AIが先にCode.gsとindex.htmlの<strong>2ファイルで返してきても、そのまま使えます</strong>（第2章の手順で「＋」→「HTML」→ <code>index</code> を作って貼る）。</span></div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
@@ -439,8 +439,227 @@ function esc_(text) {
 <section class="chapter" id="c2">
   <h2>第2章 画面を、育てる</h2>
   <div class="recipe">
-    <p class="what">この章に新しいコードはありません。第1章の画面を、日本語の注文で自分の学校の顔にします。直したら「デプロイを管理」から新バージョンにするのを忘れずに。</p>
-    <div class="note">アレンジの注文は<strong>一度にひとつずつ</strong>送ってください。まとめて頼むと、動かなくなったときに原因がわかりません。ひとつずつなら、犯人はいつも直前のひとつです。</div>
+    <p class="what">この章で新しい道具は作りません。まず第1章の画面の<strong>見た目を index.html という別ファイルに分けて</strong>（ここから先、この本はずっと2ファイルです）、そのあと日本語の注文で自分の学校の顔にします。直したら「デプロイを管理」から新バージョンにするのを忘れずに。</p>
+    <div class="note"><strong>最初の注文で、ファイルが2つになります。</strong>返ってきたら、Code.gsを差し替え、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って見た目を貼ります（名前はAIの指定と大文字小文字まで同じに）。うまく分かれなかった人は、下の「分けたあと」の2ファイルをそのまま貼ってください。第1章でAIが最初から2ファイルで返してきた人は、この注文は済んでいます。</div>
+
+    <div class="codewrap order">
+      <div class="codebar"><span class="fname">最初の注文（見た目を、別のファイルに分ける）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>この画面のコードの、見た目の部分（HTMLとCSS）を「index.html」という別のファイルに分けてください。中身のコード（Code.gs）は、そのindex.htmlを読み込んで画面を表示するようにしてください。動きも見た目も、いまと同じままにしてください。</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（週予定ウェブくん・分けたあと Code.gs）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>/**
+ * 週予定ウェブくん —— GAS本3 第2章（見た目を index.html に分けたあと・Code.gs）
+ *
+ * 2冊目第1章の「週予定書き出し」に、スマホで見られる画面をつけたものです。
+ *   ・▶実行（main）で、カレンダーから「週予定」シートに書き出す（ここまでは2冊目と同じ）
+ *   ・デプロイすると、シートの中身がスマホで開ける1枚のページになる
+ *   ・本体はシートのほう。シートを直接編集しても、画面はそのまま表示するだけなので壊れません
+ *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。第1章の1ファイル版と、動きも見た目も同じです。
+ * 【準備】ありません。カレンダーIDは練習用が貼り付け済みです。
+ * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script に貼ります。
+ * 【手順】①▶実行（main）で書き出す ②「デプロイ」→「新しいデプロイ」→「ウェブアプリ」（本文参照）
+ */
+
+// ▼ 練習用カレンダー（自分の学校で使うときだけ、ここを入れ替えます）
+const CALENDAR_ID = 'cf1359e89272ea7fdf29a589b7bf718c03f0079a3aa77eac5e3320e4e5c6c740@group.calendar.google.com';
+const SHEET_NAME = '週予定';    // ▼ 書き出す先のシート名
+const APP_TITLE = '週予定';     // ▼ 画面のいちばん上に出る見出し（学校名を入れても）
+// -------------------------------------------------------------------------
+
+const HEADER = ['日付', '曜日', '開始時刻', '予定名'];
+
+/** カレンダーからシートへ書き出します。▶実行を押すのはこの関数（2冊目第1章と同じ）。 */
+function main() {
+  let calendar = CalendarApp.getCalendarById(CALENDAR_ID);
+
+  if (!calendar) {
+    try {
+      calendar = CalendarApp.subscribeToCalendar(CALENDAR_ID);
+    } catch (e) {
+      throw new Error(
+        '練習用カレンダーを追加できませんでした。\n' +
+        'コード掲載ページにある「練習用カレンダーを追加」のリンクを押してから、\n' +
+        'もう一度▶実行してください。'
+      );
+    }
+  }
+
+  const week = nextWeek_();
+  const events = calendar.getEvents(week.start, week.end);
+
+  const rows = events.map(function (event) {
+    const startedAt = event.getStartTime();
+    return [
+      ymd_(startedAt),
+      weekdayOf_(startedAt),
+      event.isAllDayEvent() ? '終日' : Utilities.formatDate(startedAt, 'Asia/Tokyo', 'H:mm'),
+      event.getTitle()
+    ];
+  });
+
+  const sheet = getOrCreateSheet_();
+  if (sheet.getLastRow() &gt; 1) {
+    sheet.getRange(2, 1, sheet.getLastRow() - 1, HEADER.length).clearContent();
+  }
+
+  if (rows.length === 0) {
+    SpreadsheetApp.getActive().toast(
+      week.label + ' の予定は0件でした。カレンダーに予定がない週です。',
+      '書き出しました', 10
+    );
+    return;
+  }
+
+  sheet.getRange(2, 1, rows.length, HEADER.length).setValues(rows);
+  sheet.getRange(2, 1, rows.length, 1).setNumberFormat('@');
+  SpreadsheetApp.getActive().toast(week.label + ' の予定を ' + rows.length + ' 件、書き出しました。', '完了', 6);
+}
+
+/**
+ * デプロイしたURLが開かれると、この関数が呼ばれます。見た目は index.html に分けてあります。
+ * 本体はあくまでシートのほうです。シートを直接直せば、画面も次に開いたときから変わります。
+ */
+function doGet() {
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  template.sheetName = SHEET_NAME;
+  return template.evaluate()
+    .setTitle(APP_TITLE)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/** 画面が開いたときに呼ばれて、「週予定」シートの中身を日付ごとにまとめて返します。 */
+function getWeekData() {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  const lastRow = sheet ? sheet.getLastRow() : 0;
+  const rows = lastRow &gt; 1
+    ? sheet.getRange(2, 1, lastRow - 1, HEADER.length).getValues()
+    : [];
+
+  // 日付ごとにまとめます
+  const days = [];
+  const byDate = {};
+  rows.forEach(function (row) {
+    const date = String(row[0]).trim();
+    if (!date) return;
+    if (!byDate[date]) {
+      byDate[date] = { label: mdLabel_(date), weekday: String(row[1]), items: [] };
+      days.push(byDate[date]);
+    }
+    byDate[date].items.push({ time: String(row[2]), title: String(row[3]) });
+  });
+  return { days: days };
+}
+
+// ===== ここから下は、読まなくても大丈夫な部分です =========================
+
+/** 「週予定」シートを、なければ見出しつきで作ります。 */
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  ss.setSpreadsheetTimeZone('Asia/Tokyo'); // 日付がずれないように、先に日本時間にそろえます
+
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME, 0);
+
+  const header = sheet.getRange(1, 1, 1, HEADER.length);
+  if (String(header.getValues()[0][0]) !== HEADER[0]) {
+    header.setValues([HEADER]).setFontWeight('bold').setBackground('#e8eaed');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 110);
+    sheet.setColumnWidth(2, 50);
+    sheet.setColumnWidth(3, 90);
+    sheet.setColumnWidth(4, 380);
+  }
+  return sheet;
+}
+
+/** 来週の月曜0時から、土曜0時までを返します（日本時間で組み立て）。 */
+function nextWeek_() {
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd').split('-').map(Number);
+  const anchor = Date.UTC(today[0], today[1] - 1, today[2]);
+  const day = new Date(anchor).getUTCDay();
+  const untilMonday = ((8 - day) % 7) || 7;
+  const monday = anchor + untilMonday * 24 * 60 * 60 * 1000;
+
+  const start = new Date(monday - 9 * 60 * 60 * 1000);
+  const end = new Date(start.getTime() + 5 * 24 * 60 * 60 * 1000);
+
+  return {
+    start: start,
+    end: end,
+    label: Utilities.formatDate(start, 'Asia/Tokyo', 'M月d日') + 'の週'
+  };
+}
+
+/** 2026-09-07 の形の文字列にします。 */
+function ymd_(date) {
+  return Utilities.formatDate(date, 'Asia/Tokyo', 'yyyy-MM-dd');
+}
+
+/** 日本時間での曜日を1文字で返します。 */
+function weekdayOf_(date) {
+  const n = ymd_(date).split('-').map(Number);
+  const anchor = new Date(Date.UTC(n[0], n[1] - 1, n[2]));
+  return ['日', '月', '火', '水', '木', '金', '土'][anchor.getUTCDay()];
+}
+
+/** 「2026-09-07」を「9月7日」の形にします。読めない値はそのまま返します。 */
+function mdLabel_(text) {
+  const m = String(text).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  return m ? Number(m[2]) + '月' + Number(m[3]) + '日' : String(text);
+}</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（週予定ウェブくん・分けたあと index.html）※「＋」→HTMLで「index」を作って貼る</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 週予定ウェブくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
+  header { background: #188038; color: #fff; padding: 14px 16px; font-size: 20px; font-weight: bold; }
+  main { padding: 12px; max-width: 640px; margin: 0 auto; }
+  section { background: #fff; border-radius: 10px; padding: 4px 14px 10px; margin: 0 0 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  h2 { font-size: 17px; border-bottom: 2px solid #188038; padding-bottom: 6px; margin: 10px 0 4px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { font-size: 17px; padding: 8px 2px; border-bottom: 1px solid #eee; }
+  li:last-child { border-bottom: none; }
+  .time { display: inline-block; min-width: 64px; color: #188038; font-weight: bold; }
+  .empty { font-size: 16px; padding: 24px 8px; text-align: center; color: #5f6368; }
+  footer { text-align: center; color: #9aa0a6; font-size: 12px; padding: 8px 0 20px; }
+&lt;/style&gt;
+
+&lt;header&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;main&gt;&lt;p id="box" class="empty"&gt;読み込んでいます…&lt;/p&gt;&lt;/main&gt;
+&lt;footer&gt;このページは「&lt;?= sheetName ?&gt;」シートの中身を表示しています&lt;/footer&gt;
+
+&lt;script&gt;
+  // 開いたときに1回だけ、シートの中身を読みます（貼り紙型）
+  google.script.run.withSuccessHandler(render).getWeekData();
+
+  function render(data) {
+    const box = document.getElementById('box');
+    if (!data.days || data.days.length === 0) {
+      box.innerHTML = 'まだ予定が書き出されていません。&lt;br&gt;スプレッドシートで ▶実行（main）を押してください。';
+      return;
+    }
+    let html = '';
+    data.days.forEach(function (day) {
+      html += '&lt;section&gt;&lt;h2&gt;' + esc(day.label) + '（' + esc(day.weekday) + '）&lt;/h2&gt;&lt;ul&gt;';
+      day.items.forEach(function (item) {
+        html += '&lt;li&gt;&lt;span class="time"&gt;' + esc(item.time) + '&lt;/span&gt;' + esc(item.title) + '&lt;/li&gt;';
+      });
+      html += '&lt;/ul&gt;&lt;/section&gt;';
+    });
+    const main = box.parentNode;
+    main.innerHTML = html;
+  }
+
+  function esc(t) { return String(t).replace(/&amp;/g, '&amp;amp;').replace(/&lt;/g, '&amp;lt;').replace(/&gt;/g, '&amp;gt;'); }
+&lt;/script&gt;</code></pre>
+    </div>
+    <div class="note">アレンジの注文は<strong>一度にひとつずつ</strong>送ってください。まとめて頼むと、動かなくなったときに原因がわかりません。ひとつずつなら、犯人はいつも直前のひとつです。見た目の注文は、たいてい index.html だけが返ってきます。返ってきたファイルだけ差し替えれば大丈夫です。</div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">アレンジの注文（★一度にひとつずつ送ります）</span><button class="copy-btn">コピー</button></div>
@@ -477,8 +696,8 @@ function esc_(text) {
   <h2>第3章 進行表を、体育館の大画面に</h2>
   <div class="recipe">
     <p class="what">2冊目第6章の進行表タイマーに、体育館の大画面用の画面をつけたものです。いまの種目と残り時間が特大で映り、20秒ごとに勝手に更新されます。当日、誰も画面を触りません。</p>
-    <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。体育館のテレビに映すだけなら、アクセスできるユーザーは「自分のみ」でも構いません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
-    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第6章の<strong>「動くコード（進行表タイマー.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c6">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（進行表タイマー.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
+    <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。体育館のテレビに映すだけなら、アクセスできるユーザーは「自分のみ」でも構いません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第6章の<strong>「動くコード（進行表タイマー.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c6">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（進行表タイマー.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>ベースは1ファイルですが、返ってくるのは<strong>2ファイル（Code.gs＋index.html）</strong>です。2つとも貼ります（第2章の手順）。</span></div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
@@ -491,13 +710,13 @@ function esc_(text) {
 ・背景は黒、文字は白と黄色の、遠くから見やすい配色にしてください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
 ・画面の見出しは、コードの最初で行事名に書き換えられるようにしてください
-・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
+・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（進行表大画面くん.gs）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（Code.gs））</span><button class="copy-btn">コピー</button></div>
       <pre><code>/**
- * 進行表大画面くん —— GAS本3 第3章
+ * 進行表大画面くん —— GAS本3 第3章（Code.gs）
  *
  * 2冊目第6章の「進行表タイマー」に、体育館の大画面用のWeb画面をつけたものです。
  *   ・シート側の機能は2冊目と同じ（見本づくり・終了時刻の計算・◯分ずらす・1分ごとの自動追いかけ）
@@ -505,6 +724,7 @@ function esc_(text) {
  *   ・画面は20秒ごとに勝手に読み直します。当日、誰も画面を触りません
  *   ・本体は「進行表」シート。ずらすのも直すのも、ぜんぶシート側でやります
  *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。
  * 【準備】ありません。▶実行またはメニューで見本ができます。
  * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script
  */
@@ -725,66 +945,13 @@ function stopAutoFollow() {
 }
 
 /**
- * ここが今回の追加です。体育館の大画面用のページを返します。
+ * ここが今回の追加です。体育館の大画面用のページ（index.html）を返します。
  * 画面は20秒ごとに getBoardState を呼び直して、勝手に最新になります。
  */
 function doGet() {
-  const html =
-    '&lt;style&gt;' +
-    'body{font-family:sans-serif;margin:0;background:#111;color:#fff;}' +
-    'header{padding:10px 20px;font-size:28px;font-weight:bold;background:#000;color:#ffd54f;}' +
-    '.now{padding:24px 20px 8px;}' +
-    '.now .label{font-size:22px;color:#9aa0a6;}' +
-    '.now .title{font-size:64px;font-weight:bold;line-height:1.2;}' +
-    '.now .left{font-size:44px;color:#ffd54f;font-weight:bold;}' +
-    '.next{padding:8px 20px 16px;font-size:26px;color:#e8eaed;}' +
-    '.next span{color:#9aa0a6;}' +
-    'ul{list-style:none;margin:0;padding:8px 20px 24px;}' +
-    'li{font-size:24px;padding:6px 0;border-bottom:1px solid #333;}' +
-    'li.done{color:#5f6368;text-decoration:line-through;}' +
-    'li.now{color:#ffd54f;font-weight:bold;}' +
-    'li .time{display:inline-block;min-width:110px;}' +
-    '.empty{padding:40px 20px;font-size:28px;color:#9aa0a6;}' +
-    '&lt;/style&gt;' +
-    '&lt;header id="title"&gt;&lt;/header&gt;' +
-    '&lt;div id="board" class="empty"&gt;読み込んでいます…&lt;/div&gt;' +
-    '&lt;script&gt;' +
-    'function load(){' +
-    '  google.script.run.withSuccessHandler(render).getBoardState();' +
-    '}' +
-    'function render(state){' +
-    '  document.getElementById("title").textContent = state.title;' +
-    '  var box = document.getElementById("board");' +
-    '  if (!state.items || state.items.length === 0) {' +
-    '    box.className = "empty";' +
-    '    box.textContent = "進行表がまだありません。シート側で「進行表をつくる」を実行してください。";' +
-    '    return;' +
-    '  }' +
-    '  box.className = "";' +
-    '  var html = "";' +
-    '  if (state.now) {' +
-    '    html += \'&lt;div class="now"&gt;&lt;div class="label"&gt;いまの種目&lt;/div&gt;\' +' +
-    '            \'&lt;div class="title"&gt;\' + esc(state.now.content) + \'&lt;/div&gt;\' +' +
-    '            \'&lt;div class="left"&gt;あと \' + state.now.left + \' 分&lt;/div&gt;&lt;/div&gt;\';' +
-    '  } else {' +
-    '    html += \'&lt;div class="now"&gt;&lt;div class="title"&gt;\' + esc(state.message) + \'&lt;/div&gt;&lt;/div&gt;\';' +
-    '  }' +
-    '  if (state.next) {' +
-    '    html += \'&lt;div class="next"&gt;&lt;span&gt;つぎ：&lt;/span&gt;\' + esc(state.next.start) + \' \' + esc(state.next.content) + \'&lt;/div&gt;\';' +
-    '  }' +
-    '  html += "&lt;ul&gt;";' +
-    '  state.items.forEach(function(item){' +
-    '    html += \'&lt;li class="\' + item.state + \'"&gt;&lt;span class="time"&gt;\' + esc(item.start) + \'-\' + esc(item.end) + \'&lt;/span&gt;\' + esc(item.content) + \'&lt;/li&gt;\';' +
-    '  });' +
-    '  html += "&lt;/ul&gt;";' +
-    '  box.innerHTML = html;' +
-    '}' +
-    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
-    'load();' +
-    'setInterval(load, 20 * 1000);' +
-    '&lt;/script&gt;';
-
-  return HtmlService.createHtmlOutput(html)
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  return template.evaluate()
     .setTitle(APP_TITLE)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
@@ -902,6 +1069,70 @@ function nowMinutes_() {
   return parseTime_(text);
 }</code></pre>
     </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 進行表大画面くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #111; color: #fff; }
+  header { padding: 10px 20px; font-size: 28px; font-weight: bold; background: #000; color: #ffd54f; }
+  .now { padding: 24px 20px 8px; }
+  .now .label { font-size: 22px; color: #9aa0a6; }
+  .now .title { font-size: 64px; font-weight: bold; line-height: 1.2; }
+  .now .left { font-size: 44px; color: #ffd54f; font-weight: bold; }
+  .next { padding: 8px 20px 16px; font-size: 26px; color: #e8eaed; }
+  .next span { color: #9aa0a6; }
+  ul { list-style: none; margin: 0; padding: 8px 20px 24px; }
+  li { font-size: 24px; padding: 6px 0; border-bottom: 1px solid #333; }
+  li.done { color: #5f6368; text-decoration: line-through; }
+  li.now { color: #ffd54f; font-weight: bold; }
+  li .time { display: inline-block; min-width: 110px; }
+  .empty { padding: 40px 20px; font-size: 28px; color: #9aa0a6; }
+&lt;/style&gt;
+
+&lt;header id="title"&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;div id="board" class="empty"&gt;読み込んでいます…&lt;/div&gt;
+
+&lt;script&gt;
+  // 20秒ごとに、シート側の「いまの状態」を聞き直します。画面は映すだけです
+  load();
+  setInterval(load, 20 * 1000);
+
+  function load() {
+    google.script.run.withSuccessHandler(render).getBoardState();
+  }
+
+  function render(state) {
+    document.getElementById('title').textContent = state.title;
+    const box = document.getElementById('board');
+    if (!state.items || state.items.length === 0) {
+      box.className = 'empty';
+      box.textContent = '進行表がまだありません。シート側で「進行表をつくる」を実行してください。';
+      return;
+    }
+    box.className = '';
+    let html = '';
+    if (state.now) {
+      html += '&lt;div class="now"&gt;&lt;div class="label"&gt;いまの種目&lt;/div&gt;' +
+              '&lt;div class="title"&gt;' + esc(state.now.content) + '&lt;/div&gt;' +
+              '&lt;div class="left"&gt;あと ' + state.now.left + ' 分&lt;/div&gt;&lt;/div&gt;';
+    } else {
+      html += '&lt;div class="now"&gt;&lt;div class="title"&gt;' + esc(state.message) + '&lt;/div&gt;&lt;/div&gt;';
+    }
+    if (state.next) {
+      html += '&lt;div class="next"&gt;&lt;span&gt;つぎ：&lt;/span&gt;' + esc(state.next.start) + ' ' + esc(state.next.content) + '&lt;/div&gt;';
+    }
+    html += '&lt;ul&gt;';
+    state.items.forEach(function (item) {
+      html += '&lt;li class="' + item.state + '"&gt;&lt;span class="time"&gt;' + esc(item.start) + '-' + esc(item.end) + '&lt;/span&gt;' + esc(item.content) + '&lt;/li&gt;';
+    });
+    html += '&lt;/ul&gt;';
+    box.innerHTML = html;
+  }
+
+  function esc(t) { return String(t).replace(/&amp;/g, '&amp;amp;').replace(/&lt;/g, '&amp;lt;').replace(/&gt;/g, '&amp;gt;'); }
+&lt;/script&gt;</code></pre>
+    </div>
   </div>
 </section>
 
@@ -910,8 +1141,8 @@ function nowMinutes_() {
   <h2>第4章 提出状況を、ボードにする</h2>
   <div class="recipe">
     <p class="what">2冊目第7章の提出チェックくんに、集計だけが映るボードをつけたものです。誰が未提出かは画面に出ません。名簿はシートの中だけ＝画面の守りです。</p>
-    <div class="note">職員室向けなので、アクセスできるユーザーは<strong>「（学校名）内の全員」</strong>が基本です。シートそのものは、これまでどおり誰にも共有しません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
-    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第7章の<strong>「動くコード（提出チェックくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c7">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（提出チェックくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
+    <div class="note">職員室向けなので、アクセスできるユーザーは<strong>「（学校名）内の全員」</strong>が基本です。シートそのものは、これまでどおり誰にも共有しません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第7章の<strong>「動くコード（提出チェックくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c7">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（提出チェックくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>ベースは1ファイルですが、返ってくるのは<strong>2ファイル（Code.gs＋index.html）</strong>です。2つとも貼ります（第2章の手順）。</span></div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
@@ -922,24 +1153,26 @@ function nowMinutes_() {
 ・全員が提出済みになったら、「全員そろいました」と表示してください
 ・画面は1分ごとに自動で最新の状態に更新してください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
-・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
+・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（提出ボードくん.gs）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（提出ボードくん（Code.gs））</span><button class="copy-btn">コピー</button></div>
       <pre><code>/**
- * 提出ボードくん —— GAS本3 第4章
+ * 提出ボードくん —— GAS本3 第4章（Code.gs）
  *
  * 2冊目第7章の「提出チェックくん」に、提出状況のボード（Web画面）をつけたものです。
  *   ・シート側の機能は2冊目と同じ（チェックで提出日・リマインドメール・説明書シートつき）
  *   ・デプロイすると、提出の集計だけが映るボードになります
  *   ・ボードには「誰が未提出か」は出しません。名簿はシートの中だけ＝画面の守り
  *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。
  * 【準備は要りません】貼って1回実行すれば、名簿の枠と設定シートができます。
  * 【置き場所】新しいスプレッドシート → 拡張機能 → Apps Script に貼ります。
  */
 
 // ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const APP_TITLE = '提出状況';      // ▼ ボードのいちばん上に出る見出し
 const LIST_SHEET = '提出チェック';
 const CONF_SHEET = '設定';
 const MANUAL_SHEET = '説明書';
@@ -1129,47 +1362,10 @@ function rebuildManual() {
  * 出すのは集計だけ。名簿（誰が出していないか）は画面に出しません。
  */
 function doGet() {
-  const html =
-    '&lt;style&gt;' +
-    'body{font-family:sans-serif;margin:0;background:#f6f7f9;color:#202124;}' +
-    'header{background:#e8710a;color:#fff;padding:14px 16px;font-size:20px;font-weight:bold;}' +
-    'main{padding:16px;max-width:640px;margin:0 auto;}' +
-    '.card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.12);}' +
-    '.title{font-size:22px;font-weight:bold;margin-bottom:4px;}' +
-    '.due{font-size:15px;color:#5f6368;margin-bottom:12px;}' +
-    '.count{font-size:40px;font-weight:bold;}' +
-    '.count small{font-size:18px;color:#5f6368;font-weight:normal;}' +
-    '.bar{height:16px;background:#f1f3f4;border-radius:8px;overflow:hidden;margin:10px 0 4px;}' +
-    '.bar div{height:100%;background:#188038;}' +
-    '.done{color:#188038;font-weight:bold;font-size:18px;}' +
-    'footer{text-align:center;color:#9aa0a6;font-size:12px;padding:12px 0 20px;}' +
-    '.loading{text-align:center;color:#5f6368;padding:24px 0;}' +
-    '&lt;/style&gt;' +
-    '&lt;header id="head"&gt;提出状況&lt;/header&gt;' +
-    '&lt;main&gt;&lt;div id="board" class="loading"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;' +
-    '&lt;footer&gt;このボードは提出チェック表の集計だけを表示しています&lt;/footer&gt;' +
-    '&lt;script&gt;' +
-    'function load(){ google.script.run.withSuccessHandler(render).getBoardData(); }' +
-    'function render(d){' +
-    '  document.getElementById("head").textContent = d.title + " の提出状況";' +
-    '  var rate = d.total ? Math.round(d.done * 100 / d.total) : 0;' +
-    '  var html = \'&lt;div class="card"&gt;\' +' +
-    '    \'&lt;div class="title"&gt;\' + esc(d.title) + \'&lt;/div&gt;\' +' +
-    '    (d.due ? \'&lt;div class="due"&gt;締切: \' + esc(d.due) + \'&lt;/div&gt;\' : "") +' +
-    '    \'&lt;div class="count"&gt;\' + d.done + \' / \' + d.total + \'&lt;small&gt; 人が提出済み&lt;/small&gt;&lt;/div&gt;\' +' +
-    '    \'&lt;div class="bar"&gt;&lt;div style="width:\' + rate + \'%"&gt;&lt;/div&gt;&lt;/div&gt;\' +' +
-    '    (d.done === d.total &amp;&amp; d.total &gt; 0 ? \'&lt;div class="done"&gt;全員そろいました&lt;/div&gt;\' : "") +' +
-    '    \'&lt;/div&gt;\';' +
-    '  document.getElementById("board").className = "";' +
-    '  document.getElementById("board").innerHTML = html;' +
-    '}' +
-    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
-    'load();' +
-    'setInterval(load, 60 * 1000);' +
-    '&lt;/script&gt;';
-
-  return HtmlService.createHtmlOutput(html)
-    .setTitle('提出状況')
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  return template.evaluate()
+    .setTitle(APP_TITLE)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
@@ -1330,6 +1526,57 @@ function removeReminder_() {
   return triggers.length;
 }</code></pre>
     </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（提出ボードくん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 提出ボードくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
+  header { background: #e8710a; color: #fff; padding: 14px 16px; font-size: 20px; font-weight: bold; }
+  main { padding: 16px; max-width: 640px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .title { font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+  .due { font-size: 15px; color: #5f6368; margin-bottom: 12px; }
+  .count { font-size: 40px; font-weight: bold; }
+  .count small { font-size: 18px; color: #5f6368; font-weight: normal; }
+  .bar { height: 16px; background: #f1f3f4; border-radius: 8px; overflow: hidden; margin: 10px 0 4px; }
+  .bar div { height: 100%; background: #188038; }
+  .done { color: #188038; font-weight: bold; font-size: 18px; }
+  footer { text-align: center; color: #9aa0a6; font-size: 12px; padding: 12px 0 20px; }
+  .loading { text-align: center; color: #5f6368; padding: 24px 0; }
+&lt;/style&gt;
+
+&lt;header id="head"&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;main&gt;&lt;div id="board" class="loading"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;
+&lt;footer&gt;このボードは提出チェック表の集計だけを表示しています&lt;/footer&gt;
+
+&lt;script&gt;
+  // 1分ごとに、集計だけを聞き直します。名簿は画面に渡りません
+  load();
+  setInterval(load, 60 * 1000);
+
+  function load() {
+    google.script.run.withSuccessHandler(render).getBoardData();
+  }
+
+  function render(d) {
+    document.getElementById('head').textContent = d.title + ' の提出状況';
+    const rate = d.total ? Math.round(d.done * 100 / d.total) : 0;
+    const html =
+      '&lt;div class="card"&gt;' +
+      '&lt;div class="title"&gt;' + esc(d.title) + '&lt;/div&gt;' +
+      (d.due ? '&lt;div class="due"&gt;締切: ' + esc(d.due) + '&lt;/div&gt;' : '') +
+      '&lt;div class="count"&gt;' + d.done + ' / ' + d.total + '&lt;small&gt; 人が提出済み&lt;/small&gt;&lt;/div&gt;' +
+      '&lt;div class="bar"&gt;&lt;div style="width:' + rate + '%"&gt;&lt;/div&gt;&lt;/div&gt;' +
+      (d.done === d.total &amp;&amp; d.total &gt; 0 ? '&lt;div class="done"&gt;全員そろいました&lt;/div&gt;' : '') +
+      '&lt;/div&gt;';
+    document.getElementById('board').className = '';
+    document.getElementById('board').innerHTML = html;
+  }
+
+  function esc(t) { return String(t).replace(/&amp;/g, '&amp;amp;').replace(/&lt;/g, '&amp;lt;').replace(/&gt;/g, '&amp;gt;'); }
+&lt;/script&gt;</code></pre>
+    </div>
   </div>
 </section>
 
@@ -1338,8 +1585,8 @@ function removeReminder_() {
   <h2>第5章 「今日の学校」ページ</h2>
   <div class="recipe">
     <p class="what">2冊目第5章の年間予定シートくんに、「今日の学校」ページをつけたものです。今日の行事・給食と、この先1週間の行事が1枚で見られます。新しいシートは作りません。</p>
-    <div class="note">シートがまだ空なら、メニューの「1年分の日付をつくる」から（2冊目と同じ手順）。行事をシートに書き足せば、ページも次に開いたときから変わります。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
-    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第5章の<strong>「動くコード（年間予定シートくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c5">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（年間予定シートくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>AIがCode.gsとindex.htmlの<strong>2ファイルで返してきたら</strong>、そのまま使えます。エディタ左の「＋」→「HTML」で、AIが指定した名前（大文字小文字まで同じ）のファイルを作って2つ目を貼ってください。1つにまとめ直すなら「HTMLもCode.gsの中に入れて、ファイルを1つにまとめてください」と頼みます。</span></div>
+    <div class="note">シートがまだ空なら、メニューの「1年分の日付をつくる」から（2冊目と同じ手順）。行事をシートに書き足せば、ページも次に開いたときから変わります。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第5章の<strong>「動くコード（年間予定シートくん.gs）」</strong>です。前の本を持っていなくても、そこからコピーできます。　<a class="btn" href="../2/#c5">2冊目のページで開く →</a><span class="alt">手順：①上のリンク先で「動くコード（年間予定シートくん.gs）」をコピー → ②自分のチャットAIに貼る → ③戻ってきて、下の発注文を続けて送る。<br>急ぐ人・前の本を持っていない人は、ベースを貼らずに、下の「動くコード」をそのまま使っても構いません（ベースの機能ごと入っています）。<br>ベースは1ファイルですが、返ってくるのは<strong>2ファイル（Code.gs＋index.html）</strong>です。2つとも貼ります（第2章の手順）。</span></div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
@@ -1350,24 +1597,26 @@ function removeReminder_() {
 ・年間予定シートに行事や備考を書き足したら、画面にもそのまま反映されるようにしてください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
 ・スマホで見やすい大きさにしてください
-・コードは、いまのファイル1つにまとめてください。HTMLのファイルは別に作らないでください</code></pre>
+・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（今日の学校くん.gs）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（今日の学校くん（Code.gs））</span><button class="copy-btn">コピー</button></div>
       <pre><code>/**
- * 今日の学校くん —— GAS本3 第5章
+ * 今日の学校くん —— GAS本3 第5章（Code.gs）
  *
  * 2冊目第5章の「年間予定シートくん」に、「今日の学校」ページ（Web画面）をつけたものです。
  *   ・シート側の機能は2冊目と同じ（1年分の骨組みづくり・今日へジャンプ・出校/給食の入れ直し）
  *   ・デプロイすると、今日の行事・給食と、向こう1週間の行事が1枚で見られます
  *   ・本体は「年間予定」シート。行事も備考も、シートに書けば画面に出ます
  *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。
  * 【準備は要りません】日付が並んだシートを持っていなくても、この道具が作ります。
  * 【置き場所】新しいスプレッドシート → 拡張機能 → Apps Script に貼ります。
  */
 
 // ▼ ここだけ、必要なら書き換えてください ------------------------------------
+const APP_TITLE = '今日の学校';   // ▼ 画面のいちばん上に出る見出し（学校名を入れても）
 const SHEET_NAME = '年間予定';   // ▼ シートの名前
 const SATURDAY_COLOR = '#e8f0fe'; // ▼ 土曜の色
 const SUNDAY_COLOR = '#fce8e6';   // ▼ 日曜・祝日の色
@@ -1553,50 +1802,10 @@ function refillSchoolDays() {
  * 年間予定シートから、今日の行と、向こう1週間の行事を拾って映すだけです。
  */
 function doGet() {
-  const html =
-    '&lt;style&gt;' +
-    'body{font-family:sans-serif;margin:0;background:#f6f7f9;color:#202124;}' +
-    'header{background:#188038;color:#fff;padding:14px 16px;font-size:20px;font-weight:bold;}' +
-    'main{padding:12px;max-width:640px;margin:0 auto;}' +
-    '.card{background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.12);}' +
-    '.today .date{font-size:24px;font-weight:bold;}' +
-    '.today .badges{margin:8px 0;}' +
-    '.badge{display:inline-block;font-size:15px;padding:4px 10px;border-radius:14px;margin-right:8px;background:#e6f4ea;color:#137333;}' +
-    '.badge.off{background:#fce8e6;color:#c5221f;}' +
-    '.event{font-size:19px;margin:6px 0;}' +
-    '.note{font-size:15px;color:#5f6368;}' +
-    'h2{font-size:16px;margin:4px 0 8px;color:#5f6368;}' +
-    'ul{list-style:none;margin:0;padding:0;}' +
-    'li{font-size:16px;padding:6px 0;border-bottom:1px solid #eee;}' +
-    'li:last-child{border-bottom:none;}' +
-    'li .d{display:inline-block;min-width:96px;color:#188038;font-weight:bold;}' +
-    '.empty{color:#5f6368;padding:16px 0;text-align:center;}' +
-    '&lt;/style&gt;' +
-    '&lt;header&gt;今日の学校&lt;/header&gt;' +
-    '&lt;main&gt;&lt;div id="box" class="empty"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;' +
-    '&lt;script&gt;' +
-    'google.script.run.withSuccessHandler(render).getTodayData();' +
-    'function render(d){' +
-    '  var box = document.getElementById("box");' +
-    '  if (!d.ready) { box.textContent = "年間予定シートがまだありません。シート側で「1年分の日付をつくる」を実行してください。"; return; }' +
-    '  box.className = ""; var html = "";' +
-    '  html += \'&lt;div class="card today"&gt;&lt;div class="date"&gt;\' + esc(d.today.label) + \'&lt;/div&gt;&lt;div class="badges"&gt;\' +' +
-    '    \'&lt;span class="badge\' + (d.today.school ? "" : " off") + \'"&gt;\' + (d.today.school ? "出校日" : "お休み") + \'&lt;/span&gt;\' +' +
-    '    (d.today.school ? \'&lt;span class="badge\' + (d.today.lunch ? "" : " off") + \'"&gt;\' + (d.today.lunch ? "給食あり" : "給食なし") + \'&lt;/span&gt;\' : "") +' +
-    '    \'&lt;/div&gt;\' +' +
-    '    (d.today.event ? \'&lt;div class="event"&gt;\' + esc(d.today.event) + \'&lt;/div&gt;\' : \'&lt;div class="note"&gt;今日の行事は登録されていません&lt;/div&gt;\') +' +
-    '    (d.today.note ? \'&lt;div class="note"&gt;\' + esc(d.today.note) + \'&lt;/div&gt;\' : "") + \'&lt;/div&gt;\';' +
-    '  html += \'&lt;div class="card"&gt;&lt;h2&gt;この先1週間の行事&lt;/h2&gt;\';' +
-    '  if (d.week.length === 0) { html += \'&lt;div class="empty"&gt;この先1週間の行事はありません&lt;/div&gt;\'; }' +
-    '  else { html += "&lt;ul&gt;"; d.week.forEach(function(w){ html += \'&lt;li&gt;&lt;span class="d"&gt;\' + esc(w.label) + \'&lt;/span&gt;\' + esc(w.event) + \'&lt;/li&gt;\'; }); html += "&lt;/ul&gt;"; }' +
-    '  html += \'&lt;/div&gt;\';' +
-    '  box.innerHTML = html;' +
-    '}' +
-    'function esc(t){return String(t).replace(/&amp;/g,"&amp;amp;").replace(/&lt;/g,"&amp;lt;").replace(/&gt;/g,"&amp;gt;");}' +
-    '&lt;/script&gt;';
-
-  return HtmlService.createHtmlOutput(html)
-    .setTitle('今日の学校')
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  return template.evaluate()
+    .setTitle(APP_TITLE)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
@@ -1697,6 +1906,65 @@ function fetchHolidays_(year) {
   return map;
 }</code></pre>
     </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（今日の学校くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 今日の学校くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
+  header { background: #188038; color: #fff; padding: 14px 16px; font-size: 20px; font-weight: bold; }
+  main { padding: 12px; max-width: 640px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .today .date { font-size: 24px; font-weight: bold; }
+  .today .badges { margin: 8px 0; }
+  .badge { display: inline-block; font-size: 15px; padding: 4px 10px; border-radius: 14px; margin-right: 8px; background: #e6f4ea; color: #137333; }
+  .badge.off { background: #fce8e6; color: #c5221f; }
+  .event { font-size: 19px; margin: 6px 0; }
+  .note { font-size: 15px; color: #5f6368; }
+  h2 { font-size: 16px; margin: 4px 0 8px; color: #5f6368; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { font-size: 16px; padding: 6px 0; border-bottom: 1px solid #eee; }
+  li:last-child { border-bottom: none; }
+  li .d { display: inline-block; min-width: 96px; color: #188038; font-weight: bold; }
+  .empty { color: #5f6368; padding: 16px 0; text-align: center; }
+&lt;/style&gt;
+
+&lt;header&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;main&gt;&lt;div id="box" class="empty"&gt;読み込んでいます…&lt;/div&gt;&lt;/main&gt;
+
+&lt;script&gt;
+  // 開いたときに1回、シート側の「今日」と「この先1週間」を聞きます
+  google.script.run.withSuccessHandler(render).getTodayData();
+
+  function render(d) {
+    const box = document.getElementById('box');
+    if (!d.ready) {
+      box.textContent = '年間予定シートがまだありません。シート側で「1年分の日付をつくる」を実行してください。';
+      return;
+    }
+    box.className = '';
+    let html = '';
+    html += '&lt;div class="card today"&gt;&lt;div class="date"&gt;' + esc(d.today.label) + '&lt;/div&gt;&lt;div class="badges"&gt;' +
+      '&lt;span class="badge' + (d.today.school ? '' : ' off') + '"&gt;' + (d.today.school ? '出校日' : 'お休み') + '&lt;/span&gt;' +
+      (d.today.school ? '&lt;span class="badge' + (d.today.lunch ? '' : ' off') + '"&gt;' + (d.today.lunch ? '給食あり' : '給食なし') + '&lt;/span&gt;' : '') +
+      '&lt;/div&gt;' +
+      (d.today.event ? '&lt;div class="event"&gt;' + esc(d.today.event) + '&lt;/div&gt;' : '&lt;div class="note"&gt;今日の行事は登録されていません&lt;/div&gt;') +
+      (d.today.note ? '&lt;div class="note"&gt;' + esc(d.today.note) + '&lt;/div&gt;' : '') + '&lt;/div&gt;';
+    html += '&lt;div class="card"&gt;&lt;h2&gt;この先1週間の行事&lt;/h2&gt;';
+    if (d.week.length === 0) {
+      html += '&lt;div class="empty"&gt;この先1週間の行事はありません&lt;/div&gt;';
+    } else {
+      html += '&lt;ul&gt;';
+      d.week.forEach(function (w) { html += '&lt;li&gt;&lt;span class="d"&gt;' + esc(w.label) + '&lt;/span&gt;' + esc(w.event) + '&lt;/li&gt;'; });
+      html += '&lt;/ul&gt;';
+    }
+    html += '&lt;/div&gt;';
+    box.innerHTML = html;
+  }
+
+  function esc(t) { return String(t).replace(/&amp;/g, '&amp;amp;').replace(/&lt;/g, '&amp;lt;').replace(/&gt;/g, '&amp;gt;'); }
+&lt;/script&gt;</code></pre>
+    </div>
   </div>
 </section>
 
@@ -1705,7 +1973,7 @@ function fetchHolidays_(year) {
   <h2>第6章 教室に、ボタンを置く</h2>
   <div class="recipe">
     <p class="what">子どもが出席番号を選んでボタンを押すと、あなたにメールが届き、ログのシートに1行残ります。画面に名前は出しません。1冊目最終章「そうだんボタン」の、この本の形での作り直しです。</p>
-    <div class="note">通知の宛先は、実行したあなたのアドレスに自動でなります（▼ゼロ）。教室に置く前に、管理職への一言を（1冊目からの作法）。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script</span></div>
+    <div class="note">通知の宛先は、実行したあなたのアドレスに自動でなります（▼ゼロ）。教室に置く前に、管理職への一言を（1冊目からの作法）。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
     <div class="base"><strong>ベースのコードはありません。</strong>この章は新しく作らせるので、前の本のコードを貼る必要はありません。元になった1冊目第7章「そうだんボタン」を見たい人だけ：<a class="btn" href="../#c7">1冊目のページで開く →</a></div>
 
     <div class="codewrap order">
@@ -1716,19 +1984,21 @@ function fetchHolidays_(year) {
 ・ボタンが押されたら、「そうだんログ」シートに日時・出席番号・ボタンの種類を1行追加してください
 ・あわせて、このスプレッドシートの持ち主（私）にメールで知らせてください。宛先は私が入力しなくても、自動で私になるようにしてください
 ・子どもの画面には、名前は一切表示しないでください。押したあとは「せんせいに つたえたよ。」とだけ出してください
-・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください</code></pre>
+・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
+・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん.gs）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん（Code.gs））</span><button class="copy-btn">コピー</button></div>
       <pre><code>/**
- * そうだんボタンくん —— GAS本3 第6章
+ * そうだんボタンくん —— GAS本3 第6章（Code.gs）
  *
  * 1冊目の最終章で作った「そうだんボタン」の、この本の形での作り直しです。
  *   ・子どもが出席番号を選んでボタンを押すと、先生（あなた）にメールが届きます
  *   ・押した記録は「そうだんログ」シートに残ります（本体はシート）
  *   ・画面に名前は出しません。選ぶのは出席番号だけ＝子どもが使う画面の線引き
  *
+ * 【ファイルは2つ】この Code.gs と、index.html（画面の見た目）です。
  * 【準備は要りません】シートは自動でできます。通知は自分あてに届きます。
  * 【置き場所】新しいスプレッドシート（sheet.new）→ 拡張機能 → Apps Script
  */
@@ -1763,45 +2033,11 @@ function repairSheet() {
 
 /** 子どもが開く画面です。 */
 function doGet() {
-  let numbers = '';
-  for (let i = 1; i &lt;= CLASS_SIZE; i++) {
-    numbers += '&lt;option value="' + i + '"&gt;' + i + 'ばん&lt;/option&gt;';
-  }
-  let buttons = '';
-  BUTTONS.forEach(function (b) {
-    buttons += '&lt;button class="big" onclick="send(\'' + b.key + '\')"&gt;' + b.label + '&lt;/button&gt;';
-  });
-
-  const html =
-    '&lt;style&gt;' +
-    'body{font-family:sans-serif;margin:0;background:#fffde7;color:#202124;}' +
-    'header{background:#f9a825;color:#fff;padding:14px 16px;font-size:22px;font-weight:bold;}' +
-    'main{padding:16px;max-width:480px;margin:0 auto;}' +
-    'label{display:block;font-size:18px;margin:8px 0;}' +
-    'select{font-size:22px;padding:10px;border-radius:8px;border:1px solid #dadce0;width:100%;}' +
-    'button.big{display:block;width:100%;font-size:22px;padding:18px;margin:14px 0;border-radius:12px;border:none;background:#f9a825;color:#fff;font-weight:bold;}' +
-    'button.big:active{background:#f57f17;}' +
-    '#message{display:none;font-size:20px;background:#e6f4ea;color:#137333;padding:16px;border-radius:12px;margin-top:12px;text-align:center;}' +
-    '&lt;/style&gt;' +
-    '&lt;header&gt;' + esc_(APP_TITLE) + '&lt;/header&gt;' +
-    '&lt;main&gt;' +
-    '&lt;label for="num"&gt;じぶんの しゅっせきばんごうを えらんでね&lt;/label&gt;' +
-    '&lt;select id="num"&gt;' + numbers + '&lt;/select&gt;' +
-    buttons +
-    '&lt;div id="message"&gt;&lt;/div&gt;' +
-    '&lt;/main&gt;' +
-    '&lt;script&gt;' +
-    'function send(kind){' +
-    '  var num = document.getElementById("num").value;' +
-    '  google.script.run.withSuccessHandler(function(){' +
-    '    var m = document.getElementById("message");' +
-    '    m.style.display = "block";' +
-    '    m.textContent = "せんせいに つたえたよ。";' +
-    '  }).recordPress(num, kind);' +
-    '}' +
-    '&lt;/script&gt;';
-
-  return HtmlService.createHtmlOutput(html)
+  const template = HtmlService.createTemplateFromFile('index');
+  template.appTitle = APP_TITLE;
+  template.classSize = CLASS_SIZE;   // 出席番号をいくつまで出すか（画面側で番号の一覧を作ります）
+  template.buttons = BUTTONS;        // ボタンの種類（画面側でボタンを並べます）
+  return template.evaluate()
     .setTitle(APP_TITLE)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
@@ -1843,16 +2079,51 @@ function getOrCreateSheet_() {
     sheet.setColumnWidth(3, 280);
   }
   return sheet;
-}
-
-/** 画面に出す文字を、そのままの形で安全に表示するための変換です。 */
-function esc_(text) {
-  return String(text)
-    .replace(/&amp;/g, '&amp;amp;')
-    .replace(/&lt;/g, '&amp;lt;')
-    .replace(/&gt;/g, '&amp;gt;')
-    .replace(/"/g, '&amp;quot;');
 }</code></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- そうだんボタンくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+&lt;style&gt;
+  body { font-family: sans-serif; margin: 0; background: #fffde7; color: #202124; }
+  header { background: #f9a825; color: #fff; padding: 14px 16px; font-size: 22px; font-weight: bold; }
+  main { padding: 16px; max-width: 480px; margin: 0 auto; }
+  label { display: block; font-size: 18px; margin: 8px 0; }
+  select { font-size: 22px; padding: 10px; border-radius: 8px; border: 1px solid #dadce0; width: 100%; }
+  button.big { display: block; width: 100%; font-size: 22px; padding: 18px; margin: 14px 0; border-radius: 12px; border: none; background: #f9a825; color: #fff; font-weight: bold; }
+  button.big:active { background: #f57f17; }
+  #message { display: none; font-size: 20px; background: #e6f4ea; color: #137333; padding: 16px; border-radius: 12px; margin-top: 12px; text-align: center; }
+&lt;/style&gt;
+
+&lt;header&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;label for="num"&gt;じぶんの しゅっせきばんごうを えらんでね&lt;/label&gt;
+  &lt;select id="num"&gt;
+    &lt;? for (let i = 1; i &lt;= classSize; i++) { ?&gt;
+      &lt;option value="&lt;?= i ?&gt;"&gt;&lt;?= i ?&gt;ばん&lt;/option&gt;
+    &lt;? } ?&gt;
+  &lt;/select&gt;
+
+  &lt;? buttons.forEach(function (b) { ?&gt;
+    &lt;button class="big" onclick="send('&lt;?= b.key ?&gt;')"&gt;&lt;?= b.label ?&gt;&lt;/button&gt;
+  &lt;? }); ?&gt;
+
+  &lt;div id="message"&gt;&lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+  function send(kind) {
+    const num = document.getElementById('num').value;
+    google.script.run
+      .withSuccessHandler(function () {
+        const m = document.getElementById('message');
+        m.style.display = 'block';
+        m.textContent = 'せんせいに つたえたよ。';
+      })
+      .recordPress(num, kind);
+  }
+&lt;/script&gt;</code></pre>
     </div>
   </div>
 </section>
@@ -1862,7 +2133,7 @@ function esc_(text) {
   <h2>第7章 予約を、受け付ける——保護者面談</h2>
   <div class="recipe">
     <p class="what">保護者がスマホで面談を予約するWebアプリです。空き枠だけがボタンで並び、埋まった枠は「予約済み」とだけ出ます。同じ枠に同時に2人が申し込んでも、先の1人だけが確定します。</p>
-    <div class="note"><strong>この章だけファイルが2つです。</strong>Code.gsに1つ目を貼り、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って2つ目を貼ります。保護者に配るので、アクセスできるユーザーは「全員」です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <div class="note"><strong>ファイルは2つ（第2章からと同じ）。</strong>Code.gsに1つ目を貼り、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って2つ目を貼ります。保護者に配るので、アクセスできるユーザーは「全員」です。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
     <div class="base"><strong>ベースのコードはありません。</strong>この章は新しく作らせます。前置き→発注文の順に送るか、下の「動くコード」を2つとも貼ってください。</div>
 
     <div class="codewrap order">
