@@ -132,7 +132,7 @@
     <li>急ぐ人は「動くコード」をそのままコピーしても構いません。<strong>ここに載っているのは全部、発注文からAIに作らせて、実際に動かして確かめたものです。</strong>2冊目のコードが手元になくても、ここの完成品はベースの機能ごと入っています。</li>
     <li><strong>準備は要りません。</strong>必要なシートは、最初の1回の実行でコードが自分で作ります。第1章は練習用カレンダー入りで、書き換える場所はありません。</li>
     <li>画面を開けるようにする手続きが<strong>「デプロイの儀式」</strong>です（下の黄色い枠）。この本で新しく覚える操作は、実はこれだけです。</li>
-    <li><strong>第2章から、ファイルは2つです</strong>（中身の Code.gs と、見た目の index.html）。エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って、2つ目を貼ります。名前はAIが指定したとおり、大文字小文字まで同じに。第1章だけは1ファイルです。</li>
+    <li><strong>第2章から、ファイルは2つです</strong>（中身の Code.gs と、見た目の index.html）。エディタ左の「＋」→「HTML」で、コードの <code>createTemplateFromFile('◯◯')</code> に書いてある名前（<code>index</code> か <code>Index</code>。大文字小文字まで同じに）のファイルを作って、2つ目を貼ります。中身のコードのファイル名（<code>Code.gs</code> <code>code.gs</code> <code>コード.gs</code>）は何でも構いません。第1章だけは1ファイルです。</li>
     <li>エラーが出たら、赤い文字を丸ごとコピーしてAIに貼ります。画面が開けないと言われたら、まず<strong>シークレットウィンドウ</strong>で開いてもらいます（マルチアカウントの切り分け）。</li>
   </ol>
 </div>
@@ -441,11 +441,11 @@ function esc_(text) {
   <h2>第2章 画面を、育てる</h2>
   <div class="recipe">
     <p class="what">この章で新しい道具は作りません。まず第1章の画面の<strong>見た目を index.html という別ファイルに分けて</strong>（ここから先、この本はずっと2ファイルです）、そのあと日本語の注文で自分の学校の顔にします。直したら「デプロイを管理」から新バージョンにするのを忘れずに。</p>
-    <div class="note"><strong>最初の注文で、ファイルが2つになります。</strong>返ってきたら、Code.gsを差し替え、エディタ左の「＋」→「HTML」で <code>index</code> という名前のファイルを作って見た目を貼ります（名前はAIの指定と大文字小文字まで同じに）。うまく分かれなかった人は、下の「分けたあと」の2ファイルをそのまま貼ってください。第1章でAIが最初から2ファイルで返してきた人は、この注文は済んでいます。</div>
+    <div class="note"><strong>最初の注文で、ファイルが2つになります。</strong>返ってきたら、中身のコードを差し替え（ファイル名は <code>Code.gs</code> <code>code.gs</code> <code>コード.gs</code> のどれでも可）、エディタ左の「＋」→「HTML」で、コードの <code>createTemplateFromFile('◯◯')</code> に書いてある名前（たいてい <code>index</code>、<code>Index</code> のことも。大文字小文字まで同じに）のファイルを作って見た目を貼ります。うまく分かれなかった人は、下の「分けたあと」の2ファイルをそのまま貼ってください。第1章でAIが最初から2ファイルで返してきた人は、この注文は済んでいます。</div>
 
     <div class="codewrap order">
       <div class="codebar"><span class="fname">最初の注文（見た目を、別のファイルに分ける）</span><button class="copy-btn">コピー</button></div>
-      <pre><code>この画面のコードの、見た目の部分（HTMLとCSS）を「index.html」という別のファイルに分けてください。中身のコード（Code.gs）は、そのindex.htmlを読み込んで画面を表示するようにしてください。動きも見た目も、いまと同じままにしてください。</code></pre>
+      <pre><code>この画面のコードの、見た目の部分（HTMLとCSS）を「index.html」という別のファイルに分けてください。中身のコード（Code.gs）は、そのindex.htmlを読み込んで画面を表示するようにしてください。動きも見た目も、いまと同じままにしてください。HTMLのファイルの名前は「index」にしてください。</code></pre>
     </div>
 
     <div class="codewrap">
@@ -615,7 +615,7 @@ function mdLabel_(text) {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（週予定ウェブくん・分けたあと index.html）※「＋」→HTMLで「index」を作って貼る</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（週予定ウェブくん・分けたあと index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- 週予定ウェブくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
@@ -1072,7 +1072,7 @@ function nowMinutes_() {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- 進行表大画面くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #111; color: #fff; }
@@ -1529,7 +1529,7 @@ function removeReminder_() {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（提出ボードくん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（提出ボードくん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- 提出ボードくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
@@ -1909,7 +1909,7 @@ function fetchHolidays_(year) {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（今日の学校くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（今日の学校くん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- 今日の学校くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
@@ -2084,7 +2084,7 @@ function getOrCreateSheet_() {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（そうだんボタンくん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- そうだんボタンくん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #fffde7; color: #202124; }
@@ -2313,7 +2313,7 @@ function weekdayOf_(date) {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（面談予約くん（index.html）※「＋」→HTMLで「index」を作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（面談予約くん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>&lt;!-- 面談予約くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #f6f7f9; color: #202124; }
