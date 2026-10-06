@@ -119,7 +119,7 @@
     <thead><tr><th>この本の章</th><th>ベースのコード（前の本）</th><th></th></tr></thead>
     <tbody>
       <tr><td><a class="in" href="#c1">第1章 週予定を、スマホで開く</a></td><td>2冊目 第1章「動くコード（週予定書き出し.gs）」</td><td><a class="btn" href="../2/#c1">開く →</a></td></tr>
-      <tr><td><a class="in" href="#c3">第3章 進行表を、体育館の大画面に</a></td><td>2冊目 第6章「動くコード（進行表タイマー.gs）」</td><td><a class="btn" href="../2/#c6">開く →</a></td></tr>
+      <tr><td><a class="in" href="#c3">第3章 運動会の進行表を、先生方の手元に</a></td><td>2冊目 第6章「動くコード（進行表タイマー.gs）」</td><td><a class="btn" href="../2/#c6">開く →</a></td></tr>
       <tr><td><a class="in" href="#c4">第4章 提出状況を、ボードにする</a></td><td>2冊目 第7章「動くコード（提出チェックくん.gs）」</td><td><a class="btn" href="../2/#c7">開く →</a></td></tr>
       <tr><td><a class="in" href="#c5">第5章 「今日の学校」ページ</a></td><td>2冊目 第5章「動くコード（年間予定シートくん.gs）」</td><td><a class="btn" href="../2/#c5">開く →</a></td></tr>
       <tr><td><a class="in" href="#c6">第6章 教室に、ボタンを置く</a></td><td>なし（新しく作らせます。元ネタは1冊目 第7章「そうだんボタン」）</td><td><a class="btn" href="../#c7">参考 →</a></td></tr>
@@ -150,7 +150,7 @@
     <li><a href="#deploy">デプロイの儀式（チェックリスト）</a></li>
     <li><a href="#c1">第1章 週予定を、スマホで開く</a></li>
     <li><a href="#c2">第2章 画面を、育てる</a></li>
-    <li><a href="#c3">第3章 進行表を、体育館の大画面に</a></li>
+    <li><a href="#c3">第3章 運動会の進行表を、先生方の手元に</a></li>
     <li><a href="#c4">第4章 提出状況を、ボードにする</a></li>
     <li><a href="#c5">第5章 「今日の学校」ページ</a></li>
     <li><a href="#c6">第6章 教室に、ボタンを置く</a></li>
@@ -839,12 +839,12 @@ function mdLabel_(text) {
 </section>
 
 
-<!-- ============ 第3章 進行表を、体育館の大画面に ============ -->
+<!-- ============ 第3章 運動会の進行表を、先生方の手元に ============ -->
 <section class="chapter" id="c3">
-  <h2>第3章 進行表を、体育館の大画面に</h2>
+  <h2>第3章 運動会の進行表を、先生方の手元に</h2>
   <div class="recipe">
-    <p class="what">2冊目第6章の進行表タイマーに、体育館の大画面用の画面をつけたものです。いまの種目と残り時間が特大で映り、20秒ごとに勝手に更新されます。当日、誰も画面を触りません。</p>
-    <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。体育館のテレビに映すだけなら、アクセスできるユーザーは「自分のみ」でも構いません。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
+    <p class="what">2冊目第6章の進行表タイマーに、運動会の当日に先生方が手元の端末で開く画面をつけたものです。いまの種目と残り時間が大きく出て、20秒ごとに勝手に更新されます。当日、誰も画面を触りません。</p>
+    <div class="note">操作はぜんぶシート側（見本づくり・終了時刻の計算・◯分ずらす）。画面は映すだけです。先生方が学校のアカウントで開くので、アクセスできるユーザーは「組織内」にします。私物のスマホを使えない学校は、学校のChromebookで開きます。<br><span class="where">貼り付け先：新しいスプレッドシート（アドレスバーに <code>sheet.new</code>）→ 拡張機能 → Apps Script（Code.gs ＋ index.html）</span></div>
     <div class="base"><strong>ベースのコード</strong>＝発注文の「このコード」は、2冊目 第6章の<strong>「動くコード（進行表タイマー.gs）」</strong>です。前の本を持っている人は手元のコードを使えます。持っていない人は、すぐ下の折りたたみから元コードをコピーできます。　<a class="btn" href="../2/#c6">2冊目のページで開く →</a><span class="alt">ベースをチャットAIに貼ってから、下の発注文を続けて送ります。急ぐ人は、このページの「動くコード」をそのまま貼っても構いません（ベースの機能ごと入っています）。<br>ベースは1ファイルですが、返ってくるのは<strong>2ファイル（Code.gs＋index.html）</strong>です。2つとも貼ります（第2章の手順）。</span></div>
     <details class="base-code"><summary>2冊目の元コード（Web画面をつける前）をこのページでコピー</summary>
     <div class="codewrap">
@@ -1165,25 +1165,26 @@ function nowMinutes_() {
     <div class="codewrap order">
       <div class="codebar"><span class="fname">発注文（ベースのコードを貼ってから、続けて送る）</span><button class="copy-btn">コピー</button></div>
       <pre><code>このコード（行事の進行表タイマー）に、続けて機能を足してください。
-・体育館の大画面に映すためのWebアプリの画面を追加してください
+・運動会の当日、校庭のあちこちにいる先生方が、自分の端末で開いて見るWebアプリの画面を追加してください
 ・画面には、いま進んでいる種目を特大の文字で、残り時間を「あと◯分」の形で表示してください
 ・つぎの種目も1行で表示してください
 ・その下に一日の全部の種目を並べて、終わったものは薄く線を引いてください
 ・画面は20秒ごとに自動で最新の状態に更新してください。人が操作しなくても動き続けるようにしてください
-・背景は黒、文字は白と黄色の、遠くから見やすい配色にしてください
+・背景は黒、文字は白と黄色の、外の明るい場所でも読みやすい配色にしてください
+・スマホでもパソコンでも崩れないようにしてください
 ・データはすべてスプレッドシートに保存し、シートを直接編集しても壊れないようにしてください
 ・画面の見出しは、コードの最初で行事名に書き換えられるようにしてください
 ・コードは、中身（Code.gs）と見た目（index.html）の2ファイルに分けてください</code></pre>
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（Code.gs））</span><button class="copy-btn">コピー</button></div>
+      <div class="codebar"><span class="fname">動くコード（進行表くん（Code.gs））</span><button class="copy-btn">コピー</button></div>
       <pre><code>/**
- * 進行表大画面くん —— GAS本3 第3章（Code.gs）
+ * 進行表くん —— GAS本3 第3章（Code.gs）
  *
- * 2冊目第6章の「進行表タイマー」に、体育館の大画面用のWeb画面をつけたものです。
+ * 2冊目第6章の「進行表タイマー」に、運動会の当日に先生方が手元の端末で開くWeb画面をつけたものです。
  *   ・シート側の機能は2冊目と同じ（見本づくり・終了時刻の計算・◯分ずらす・1分ごとの自動追いかけ）
- *   ・デプロイすると、いまの種目と残り時間が大きく映る画面になります
+ *   ・デプロイすると、いまの種目と残り時間が大きく出る画面になります（スマホ・Chromebook・パソコン）
  *   ・画面は20秒ごとに勝手に読み直します。当日、誰も画面を触りません
  *   ・本体は「進行表」シート。ずらすのも直すのも、ぜんぶシート側でやります
  *
@@ -1408,7 +1409,7 @@ function stopAutoFollow() {
 }
 
 /**
- * ここが今回の追加です。体育館の大画面用のページ（index.html）を返します。
+ * ここが今回の追加です。先生方が手元の端末で開くページ（index.html）を返します。
  * 画面は20秒ごとに getBoardState を呼び直して、勝手に最新になります。
  */
 function doGet() {
@@ -1488,7 +1489,7 @@ function ensureSheet_() {
   return sheet;
 }
 
-/** 体育館の後ろからでも読めるように、シート側も大きくします。 */
+/** 放送席で見やすいように、シート側も大きくします。 */
 function makeItBig_(sheet) {
   sheet.getRange(1, 1, sheet.getMaxRows(), HEADER.length).setFontSize(BIG_FONT).setVerticalAlignment('middle');
   sheet.setColumnWidth(1, 120);
@@ -1534,8 +1535,8 @@ function nowMinutes_() {
     </div>
 
     <div class="codewrap">
-      <div class="codebar"><span class="fname">動くコード（進行表大画面くん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
-      <pre><code>&lt;!-- 進行表大画面くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
+      <div class="codebar"><span class="fname">動くコード（進行表くん（index.html）※「＋」→HTMLで、コードの createTemplateFromFile の名前（index）で作って貼る）</span><button class="copy-btn">コピー</button></div>
+      <pre><code>&lt;!-- 進行表くん —— 画面の見た目（index.html）。エディタの「＋」→「HTML」で「index」という名前で作って貼ります --&gt;
 &lt;style&gt;
   body { font-family: sans-serif; margin: 0; background: #111; color: #fff; }
   header { padding: 10px 20px; font-size: 28px; font-weight: bold; background: #000; color: #ffd54f; }
@@ -1551,6 +1552,19 @@ function nowMinutes_() {
   li.now { color: #ffd54f; font-weight: bold; }
   li .time { display: inline-block; min-width: 110px; }
   .empty { padding: 40px 20px; font-size: 28px; color: #9aa0a6; }
+  /* スマホの幅では、ひとまわり小さくして崩れないようにします */
+  @media (max-width: 600px) {
+    header { font-size: 20px; padding: 8px 14px; }
+    .now { padding: 16px 14px 6px; }
+    .now .label { font-size: 16px; }
+    .now .title { font-size: 36px; }
+    .now .left { font-size: 30px; }
+    .next { padding: 6px 14px 12px; font-size: 18px; }
+    ul { padding: 6px 14px 20px; }
+    li { font-size: 16px; }
+    li .time { min-width: 90px; }
+    .empty { padding: 28px 14px; font-size: 20px; }
+  }
 &lt;/style&gt;
 
 &lt;header id="title"&gt;&lt;?= appTitle ?&gt;&lt;/header&gt;
